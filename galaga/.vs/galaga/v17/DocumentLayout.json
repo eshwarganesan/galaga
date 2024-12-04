@@ -5,6 +5,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{A449E313-B5A1-4FED-B826-17F6C2E84BC4}|galaga.vcxproj|C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\galaga.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A449E313-B5A1-4FED-B826-17F6C2E84BC4}|galaga.vcxproj|solutionrelative:galaga.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A449E313-B5A1-4FED-B826-17F6C2E84BC4}|galaga.vcxproj|C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\Player.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A449E313-B5A1-4FED-B826-17F6C2E84BC4}|galaga.vcxproj|solutionrelative:Player.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A449E313-B5A1-4FED-B826-17F6C2E84BC4}|galaga.vcxproj|C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\Player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A449E313-B5A1-4FED-B826-17F6C2E84BC4}|galaga.vcxproj|solutionrelative:Player.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +22,33 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Player.h",
+              "DocumentMoniker": "C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\Player.h",
+              "RelativeDocumentMoniker": "Player.h",
+              "ToolTip": "C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\Player.h",
+              "RelativeToolTip": "Player.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-12-02T22:52:59.363Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Player.cpp",
+              "DocumentMoniker": "C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\Player.cpp",
+              "RelativeDocumentMoniker": "Player.cpp",
+              "ToolTip": "C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\Player.cpp",
+              "RelativeToolTip": "Player.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-02T21:12:45.595Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +57,7 @@
               "RelativeDocumentMoniker": "galaga.cpp",
               "ToolTip": "C:\\Users\\Eshwar\\Documents\\MECH 415\\Project\\galaga\\galaga\\galaga.cpp",
               "RelativeToolTip": "galaga.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-11-25T22:06:55.469Z",
               "EditorCaption": ""

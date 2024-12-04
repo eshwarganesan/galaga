@@ -1,2 +1,9 @@
-﻿  galaga.cpp
-  galaga.vcxproj -> C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\x64\Debug\galaga.exe
+﻿  Bullet.cpp
+  Enemy.cpp
+  galaga.cpp
+  Player.cpp
+  Generating Code...
+Player.obj : error LNK2019: unresolved external symbol "void __cdecl create_sprite(char * const,int &)" (?create_sprite@@YAXQEADAEAH@Z) referenced in function "public: __cdecl Player::Player(char *)" (??0Player@@QEAA@PEAD@Z)
+Player.obj : error LNK2019: unresolved external symbol "void __cdecl draw_sprite(int,double,double,double,double)" (?draw_sprite@@YAXHNNNN@Z) referenced in function "public: void __cdecl Player::draw(void)" (?draw@Player@@QEAAXXZ)
+2D_graphics_ver1.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\x64\Debug\galaga.exe : fatal error LNK1120: 2 unresolved externals

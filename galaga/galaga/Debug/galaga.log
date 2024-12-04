@@ -1,0 +1,2 @@
+﻿cl : command line  warning D9035: option 'Og' has been deprecated and will be removed in a future release
+cl : command line  error D8016: '/RTC1' and '/Og' command-line options are incompatible
