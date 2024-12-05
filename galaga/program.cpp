@@ -36,10 +36,10 @@ int main()
         clear();
         spaceship->draw();
         if (KEY('A')) {
-            spaceship->move(-2);
+            spaceship->move(-10);
         }
         if (KEY('D')) {
-            spaceship->move(2);
+            spaceship->move(10);
         }
 
     }

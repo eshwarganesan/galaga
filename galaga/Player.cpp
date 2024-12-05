@@ -5,7 +5,7 @@
 using namespace std;
 
 Player::Player(char *filename) {
-	xPosition = 1780;
+	xPosition = 1280;
 	yPosition = 100;
 	scale = 0.2;
 	angle = 0;
@@ -20,6 +20,11 @@ void Player::draw() {
 }
 
 void Player::move(float dx) {
-	this->xPosition += dx;
-	cout << "\nMoving player - X: " << this->xPosition;
+	if (this->xPosition + dx < 60 || this->xPosition + dx > 2500) {
+		return;
+	}
+	else {
+		this->xPosition += dx;
+		cout << "\nMoving player - X: " << this->xPosition;
+	}
 }
