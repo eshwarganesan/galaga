@@ -32,3 +32,5 @@
 *.app
 
 galaga/.vs/
+DirectX_window/
+galaga/Debug/

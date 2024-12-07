@@ -2,9 +2,11 @@
 class Bullet
 {
 public:
-	Bullet(double xPosition, double yPosition, double speed, bool enemy);
+	Bullet(char* filename, double xPosition, double yPosition, double speed);
+
 	void draw();
 private:
-	double x, y;
+	double x, y, v;
+	int id;
 };
 
