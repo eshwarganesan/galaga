@@ -136,6 +136,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="2D_graphics_ver1.lib" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="timer.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
