@@ -38,11 +38,13 @@ int main()
     update();
 
     double lastTime = high_resolution_time();
+    double lastFire = high_resolution_time();
 
     while (true) {
         clear();
         double currentTime = high_resolution_time();
         double delta = currentTime - lastTime;
+        double fireDelay = currentTime - lastFire;
         lastTime = currentTime;
         spaceship->draw();
         for (auto& bullet : bullets) {
@@ -54,8 +56,9 @@ int main()
         if (KEY('D')) {
             spaceship->move(1, delta);
         }
-        if (KEY('L')) {
+        if (KEY('L') && fireDelay > 1) {
             spaceship->shoot(bullets);
+            lastFire = currentTime;
         }
         if (KEY('P')) {
             break;
