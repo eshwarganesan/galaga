@@ -13,7 +13,6 @@ Player::Player(char *filename) {
 	speed = 500.0;
 
 	create_sprite(filename, player_id);
-
 }
 
 void Player::draw() {
@@ -23,15 +22,26 @@ void Player::draw() {
 void Player::move(double direction, double deltaTime) {
 	double dx = speed * direction * deltaTime;
 
-	if (this->xPosition + dx < 60 || this->xPosition + dx > 2500) {
+	if (this->xPosition + dx <= 60) {
+		this->xPosition = 60;
+		cout << "\nMoving player - X: " << this->xPosition;
 		return;
 	}
-	else {
-		this->xPosition += dx;
+	if (this->xPosition + dx >= 1280) {
+		this->xPosition = 1280;
 		cout << "\nMoving player - X: " << this->xPosition;
+		return;
 	}
+	
+	this->xPosition += dx;
+	cout << "\nMoving player - X: " << this->xPosition;
+
 }
 
 void Player::shoot(std::vector<Bullet>& bullets) {
 	bullets.push_back(Bullet("spaceship.png", xPosition, yPosition, 500.0));
+}
+
+void Player::death() {
+
 }

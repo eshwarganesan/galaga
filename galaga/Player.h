@@ -12,7 +12,9 @@ public:
 	void draw();
 	void move(double direction, double deltaTime);
 	void shoot(std::vector<Bullet>& bullets);
+	void death();
 	int player_id;
+	int explosion_id;
 private:
 	double xPosition, yPosition;
 	double scale, angle;
