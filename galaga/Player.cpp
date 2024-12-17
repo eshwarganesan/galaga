@@ -42,6 +42,6 @@ void Player::shoot(std::vector<Bullet>& bullets) {
 	bullets.push_back(Bullet("spaceship.png", xPosition, yPosition, 500.0));
 }
 
-void Player::death() {
-
+void Player::death(int frame) {
+	draw_sprite(explosion_id[frame], xPosition, yPosition, angle, scale);
 }

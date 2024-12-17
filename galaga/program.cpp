@@ -32,7 +32,7 @@ int main()
     }
     */
     initialize_graphics();
-	Player* spaceship = new Player("spaceship.png");
+	Player* spaceship = new Player("Player_Spaceship.png");
     std::vector<Bullet> bullets;
 	
     update();
@@ -76,3 +76,10 @@ int main()
 	return 0;
 }
 
+void explosion(std::vector<Bullet> bullets, Player* player) {
+    clear();
+    for (auto& bullet : bullets) {
+        bullet.draw();
+    }
+    //player->death();
+}
