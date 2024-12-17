@@ -42,7 +42,7 @@ int main()
     Enemy* enemy3 = new Enemy("enemyBlack3.png", 200);
     Enemy* enemy4 = new Enemy("enemyBlack4.png", 300);
     Enemy* enemy5 = new Enemy("enemyBlack5.png", 400);
-    std::vector<Bullet> bullets;
+    std::vector<Bullet> player_bullets;
 	
     update();
 
@@ -70,7 +70,7 @@ int main()
         enemy4->move();
         //enemy5->move(4000);
 
-        for (auto& bullet : bullets) {
+        for (auto& bullet : player_bullets) {
             bullet.draw();
         }
         if (KEY('A')) {
@@ -80,17 +80,17 @@ int main()
             spaceship->move(1, delta);
         }
         if (KEY('L') && fireDelay > 0.5) {
-            spaceship->shoot(bullets);
+            spaceship->shoot(player_bullets);
             lastFire = currentTime;
         }
         if (KEY('P')) {
             break;
         }
-        for (auto& bullet : bullets) {
+        for (auto& bullet : player_bullets) {
             bullet.update(delta);
             if (bullet.outOfScreen()) {
                 cout << "\nBullet hit the top edge";
-                bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
+                player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
             }
         }
  
@@ -105,4 +105,55 @@ void explosion(std::vector<Bullet> bullets, Player* player) {
     clear();
 
     //player->death();
+}
+
+bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2) {
+    // Combine edges from both hitboxes
+    std::vector<Vector2> axes;
+
+    for (size_t i = 0; i < hitbox1.size(); ++i) {
+        Vector2 edge = { hitbox1[(i + 1) % hitbox1.size()].x - hitbox1[i].x,
+                         hitbox1[(i + 1) % hitbox1.size()].y - hitbox1[i].y };
+        axes.push_back({ -edge.y, edge.x });  // Perpendicular normal
+    }
+
+    for (size_t i = 0; i < hitbox2.size(); ++i) {
+        Vector2 edge = { hitbox2[(i + 1) % hitbox2.size()].x - hitbox2[i].x,
+                         hitbox2[(i + 1) % hitbox2.size()].y - hitbox2[i].y };
+        axes.push_back({ -edge.y, edge.x });
+    }
+
+    // Project both hitboxes onto each axis and check for overlap
+    for (const auto& axis : axes) {
+        auto resultA = project(hitbox1, axis);
+        auto resultB = project(hitbox2, axis);
+
+        float minA = resultA.first;
+        float maxA = resultA.second;
+        float minB = resultB.first;
+        float maxB = resultB.second;
+
+        if (!overlap(minA, maxA, minB, maxB)) {
+            return false;  // No collision
+        }
+    }
+
+    return true;  // Collision detected
+}
+
+std::pair<float, float> project(const std::vector<Vector2>& shape, const Vector2& axis) {
+    float min = shape[0].x * axis.x + shape[0].y * axis.y;
+    float max = min;
+
+    for (const auto& vertex : shape) {
+        float projection = vertex.x * axis.x + vertex.y * axis.y;
+        if (projection < min) min = projection;
+        if (projection > max) max = projection;
+    }
+
+    return std::make_pair(min, max);
+}
+
+bool overlap(float minA, float maxA, float minB, float maxB) {
+    return !(minA > maxB || minB > maxA);
 }

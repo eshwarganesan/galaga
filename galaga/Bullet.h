@@ -1,4 +1,7 @@
 #pragma once
+#include <vector>
+#include "Vector2D.h"
+
 class Bullet
 {
 public:
@@ -12,8 +15,11 @@ public:
 
 	bool operator==(const Bullet& other);
 
+	std::vector<Vector2> getVertices();
+
 private:
 	double x, y, v, scale;
+	double width, height;
 	int id;
 };
 

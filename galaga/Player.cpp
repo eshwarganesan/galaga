@@ -2,6 +2,7 @@
 #include "2D_graphics.h"
 #include <iostream>
 
+
 using namespace std;
 
 
@@ -11,6 +12,9 @@ Player::Player(char *filename) {
 	scale = 0.7;
 	angle = 0;
 	speed = 500.0;
+
+	height = 65 * scale;
+	width = 98 * scale;
 
 	create_sprite(filename, player_id);
 }
@@ -44,4 +48,15 @@ void Player::shoot(std::vector<Bullet>& bullets) {
 
 void Player::death(int frame) {
 	draw_sprite(explosion_id[frame], xPosition, yPosition, angle, scale);
+}
+
+std::vector<Vector2> Player::getVertices() {
+	std::vector<Vector2> vertices;
+
+	// Assume ship points upward and is equilateral for simplicity
+	vertices.push_back({ xPosition, yPosition + height / 2 });      // Top vertex
+	vertices.push_back({ xPosition - width / 2, yPosition - height / 2 }); // Bottom left
+	vertices.push_back({ xPosition + width / 2, yPosition - height / 2 }); // Bottom right
+
+	return vertices;
 }
