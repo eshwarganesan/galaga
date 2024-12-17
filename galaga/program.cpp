@@ -35,7 +35,8 @@ int main()
     initialize_graphics();
     //background sprite
     int background_id;
-    create_sprite("/sprites/Backgrounds/black.png", background_id);
+    //create_sprite("/sprites/Backgrounds/black.png", background_id);
+    create_sprite("/sprites/Background3.png", background_id);
     Player* spaceship = new Player("/sprites/PNG/playerShip3_red.png");
     Enemy* enemy1 = new Enemy("enemyBlack1.png", 500);
     Enemy* enemy2 = new Enemy("enemyBlack2.png", 600);
