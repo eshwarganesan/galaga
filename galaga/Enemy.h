@@ -20,7 +20,7 @@ class Enemy
 {
 public:
 	Enemy(char* filename, double xPosition1);
-
+	bool movingRight = true;
 	void draw();
 	void move();
 	void shoot(std::vector<Bullet>& bullets);
