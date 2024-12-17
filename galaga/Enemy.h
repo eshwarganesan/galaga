@@ -5,22 +5,35 @@
 
 class Bullet;
 
+struct Waypoint {
+	float x, y;
+};
+
+enum class EnemyType {
+	BASIC,
+	SWIRL,
+	ZIGZAG,
+	BOSS
+};
+
 class Enemy
 {
 public:
-public:
-	Enemy(char* filename);
+	Enemy(char* filename, double xPosition1);
+
 	void draw();
-	void move(double direction, double deltaTime);
+	void move();
 	void shoot(std::vector<Bullet>& bullets);
 	void death(int frame);
-	int player_id;
+	int enemy_id;
 	int explosion_id[4];
+	
+	float x, y;
 private:
+	float speed;
 	double xPosition, yPosition;
 	double scale, angle;
-	double speed;
+	
 };
-
-};
-
+void SpawnEnemies();
+void UpdateEnemies(float deltaTime);
