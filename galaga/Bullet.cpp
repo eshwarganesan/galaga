@@ -19,13 +19,13 @@ void Bullet::draw() {
 }
 
 void Bullet::update(double deltaTime) {
-	if (this->y < 1400) { // Move upward
+	if (this->y < 1280) { // Move upward
 		this->y += v * deltaTime;
 	}
 }
 
 bool Bullet::outOfScreen() {
-	return y > 1000;
+	return y > 780;
 }
 
 bool Bullet::operator==(const Bullet& other) {

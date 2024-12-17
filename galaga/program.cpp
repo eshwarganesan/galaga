@@ -32,7 +32,10 @@ int main()
     }
     */
     initialize_graphics();
-	Player* spaceship = new Player("Player_Spaceship.png");
+    //background sprite
+    int background_id;
+    create_sprite("/sprites/Backgrounds/black.png", background_id);
+	Player* spaceship = new Player("/sprites/PNG/playerShip3_red.png");
     std::vector<Bullet> bullets;
 	
     update();
@@ -42,6 +45,8 @@ int main()
 
     while (true) {
         clear();
+        //background
+        draw_sprite(background_id, 640, 360, 0, 5);
         double currentTime = high_resolution_time();
         double delta = currentTime - lastTime;
         double fireDelay = currentTime - lastFire;
@@ -56,7 +61,7 @@ int main()
         if (KEY('D')) {
             spaceship->move(1, delta);
         }
-        if (KEY('L') && fireDelay > 1) {
+        if (KEY('L') && fireDelay > 0.5) {
             spaceship->shoot(bullets);
             lastFire = currentTime;
         }
@@ -66,6 +71,7 @@ int main()
         for (auto& bullet : bullets) {
             bullet.update(delta);
             if (bullet.outOfScreen()) {
+                cout << "\nBullet hit the top edge";
                 bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
             }
         }
@@ -78,8 +84,6 @@ int main()
 
 void explosion(std::vector<Bullet> bullets, Player* player) {
     clear();
-    for (auto& bullet : bullets) {
-        bullet.draw();
-    }
+
     //player->death();
 }

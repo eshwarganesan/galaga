@@ -6,9 +6,9 @@ using namespace std;
 
 
 Player::Player(char *filename) {
-	xPosition = 1280;
-	yPosition = 100;
-	scale = 0.2;
+	xPosition = 640;
+	yPosition = 30;
+	scale = 0.7;
 	angle = 0;
 	speed = 500.0;
 
@@ -22,13 +22,13 @@ void Player::draw() {
 void Player::move(double direction, double deltaTime) {
 	double dx = speed * direction * deltaTime;
 
-	if (this->xPosition + dx <= 60) {
-		this->xPosition = 60;
+	if (this->xPosition + dx <= 35) {
+		this->xPosition = 35;
 		cout << "\nMoving player - X: " << this->xPosition;
 		return;
 	}
-	if (this->xPosition + dx >= 1280) {
-		this->xPosition = 1280;
+	if (this->xPosition + dx >= 1245) {
+		this->xPosition = 1245;
 		cout << "\nMoving player - X: " << this->xPosition;
 		return;
 	}
@@ -39,7 +39,7 @@ void Player::move(double direction, double deltaTime) {
 }
 
 void Player::shoot(std::vector<Bullet>& bullets) {
-	bullets.push_back(Bullet("spaceship.png", xPosition, yPosition, 500.0));
+	bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition + 20, 500.0));
 }
 
 void Player::death(int frame) {
