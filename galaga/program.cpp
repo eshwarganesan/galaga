@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include <vector>
 #include "timer.h"
+#include "Enemy.h"
 
 #include <Windows.h> // also needed for the 2D graphics library
 #include "Player.h"
@@ -35,13 +36,19 @@ int main()
     //background sprite
     int background_id;
     create_sprite("/sprites/Backgrounds/black.png", background_id);
-	Player* spaceship = new Player("/sprites/PNG/playerShip3_red.png");
+    Player* spaceship = new Player("/sprites/PNG/playerShip3_red.png");
+    Enemy* enemy1 = new Enemy("enemyBlack1.png", 500);
+    Enemy* enemy2 = new Enemy("enemyBlack2.png", 600);
+    Enemy* enemy3 = new Enemy("enemyBlack3.png", 200);
+    Enemy* enemy4 = new Enemy("enemyBlack4.png", 300);
+    Enemy* enemy5 = new Enemy("enemyBlack5.png", 400);
     std::vector<Bullet> bullets;
 	
     update();
 
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
+ 
 
     while (true) {
         clear();
@@ -52,6 +59,18 @@ int main()
         double fireDelay = currentTime - lastFire;
         lastTime = currentTime;
         spaceship->draw();
+        enemy1->draw();
+        //enemy2->draw(); 
+        //enemy3->draw();
+        enemy4->draw();
+        //enemy5->draw();
+        enemy1->move();
+        Sleep(200);
+        //enemy2->move(1000);
+        //enemy3->move(2000);
+        enemy4->move();
+        //enemy5->move(4000);
+
         for (auto& bullet : bullets) {
             bullet.draw();
         }
@@ -75,6 +94,7 @@ int main()
                 bullets.erase(std::remove(bullets.begin(), bullets.end(), bullet), bullets.end());
             }
         }
+ 
         update();
     }
 
