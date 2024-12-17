@@ -65,7 +65,6 @@ int main()
         enemy4->draw();
         //enemy5->draw();
         enemy1->move();
-        Sleep(200);
         //enemy2->move(1000);
         //enemy3->move(2000);
         enemy4->move();
