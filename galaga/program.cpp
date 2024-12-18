@@ -65,10 +65,10 @@ int main()
         enemy4->draw();
         enemy2->draw();
         enemy3->draw();
-    //    enemy1->attack(1, currentTime);
-   //    enemy4->move(5);
+        enemy1->attack(1, currentTime);
+        enemy4->move(5);
         enemy2->swirl(1,currentTime);
-    //    enemy3->zigzag(1, currentTime);
+        enemy3->zigzag(1, currentTime);
         
         /*
         for (auto& bullet : enemy_bullets) {
