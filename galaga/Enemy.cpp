@@ -2,6 +2,7 @@
 #include "2D_graphics.h"
 #include <iostream>
 #include <windows.h>
+#include "timer.h" // use the time / clock reading function
 using namespace std;
 //10 stage design // 1, b and f// 2, downward // 3, swirl// 4, zig zag // 5 , I dont even know
 //stage 1 tutorial like, passive enemies :black1 black2 x 5 enemies going back and forth
@@ -16,15 +17,13 @@ using namespace std;
 //stage 10 All enemies go everywhere very chaotic, very hard to actually win, practically impossible
 
 
+const int NUM_SECONDS = 10;
 
 
-std::vector<Waypoint> path = {
-	{100, 0}, {150, 50}, {200, 100}, {250, 150}, {300, 200}
-};
 
- Enemy::Enemy(char *file_name, double yPosition1) {
+ Enemy::Enemy(char *file_name, double yPosition1, double xPosition1) {
 	yPosition = yPosition1;
-	xPosition = 500;
+	xPosition = xPosition1;
 	scale = 0.90;
 	angle = 0;
 	speed = 500.0;
@@ -36,9 +35,9 @@ void Enemy::draw() {
 	draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
 }
 
-void Enemy::move() {
+void Enemy::move(float speed) { // range of speed should be between 1 to 10
 	if (movingRight) {
-		this->xPosition++;
+		this->xPosition = xPosition + speed;
 		if (this->xPosition >= 1000) {
 			movingRight = false;
 			return;
@@ -46,7 +45,7 @@ void Enemy::move() {
 		return;
 	}
 		else {
-		this->xPosition--;
+		this->xPosition = xPosition-speed;
 			if (this->xPosition <= 200) {
 				movingRight = true;
 				return;
@@ -54,5 +53,95 @@ void Enemy::move() {
 			return;
 		}
 }
+//Make start attack on a cycle like every 10s 
+void Enemy::attack(float speed, float deltaTime) {
+	
+
+		if (attacking) {
+				this->yPosition = yPosition + speed;
+				if (this->yPosition >= 690) {
+					attacking = false;
+					return;
+				}
+				return;
+			}
+		else {
+				this->yPosition = yPosition - speed;
+				if (this->yPosition <= 50) {
+					attacking = true;
+					return;
+				}
+				return;
+			}
+		
+}
+
+void Enemy::swirl(float speed, float deltaTime) {
+	double radius = 100;
+	angle += 2.0* deltaTime*10e-4;
+	this->xPosition = 600 + radius * sin(angle);
+	this->yPosition = 300 + radius * cos(angle);
+	return;
+}
+
+void Enemy::zigzag(float speed, float deltaTime) {
+	if (movingRight && attacking) {
+		this->xPosition = xPosition + speed;
+		this->yPosition = yPosition - speed;
+		if (this->xPosition >= 1000) {
+			movingRight = false;
+			return;
+		}
+		if (this->yPosition <= 50) {
+			attacking =false;
+			return;
+		}
+		return;
+	}
+	if (attacking == false) {
+		this->yPosition = yPosition + speed;
+		if (this->yPosition >= 690) {
+			attacking = true;
+			return;
+		}
+		return;
+	}
+	if(movingRight==false){
+		this->xPosition = xPosition - speed;
+		if (this->xPosition <= 200) {
+			movingRight = true;
+			return;
+		}
+		return;
+	}
+
+}
 
 
+/*
+void Enemy::shoot(std::vector<Bullet>& bullets, double interval) {
+	double time_counter = 0;
+	double this_time = high_resolution_time();
+	double last_time = this_time;
+	for (;;) {
+		if (this_time - last_time >= interval * 10 ^ 6) {
+			bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition - 20, 500.0));
+			last_time = this_time;
+		}
+
+	}
+
+
+}
+*/
+
+std::vector<Vector2> Enemy::getVertices() {
+	std::vector<Vector2> vertices;
+
+	// Assume ship points upward and is equilateral for simplicity
+	vertices.push_back({ xPosition - width / 2, yPosition + height / 2 });      // Top left vertex
+	vertices.push_back({ xPosition + width / 2, yPosition + height / 2 }); // Top right 
+	vertices.push_back({ xPosition + width / 2, yPosition - height / 2 }); // Bottom right
+	vertices.push_back({ xPosition - width / 2, yPosition - height / 2 });      // bot left vertex
+	return vertices;
+}

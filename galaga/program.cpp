@@ -38,12 +38,13 @@ int main()
     //create_sprite("/sprites/Backgrounds/black.png", background_id);
     create_sprite("/sprites/Background3.png", background_id);
     Player* spaceship = new Player("/sprites/PNG/playerShip3_red.png");
-    Enemy* enemy1 = new Enemy("enemyBlack1.png", 500);
-    Enemy* enemy2 = new Enemy("enemyBlack2.png", 600);
-    Enemy* enemy3 = new Enemy("enemyBlack3.png", 200);
-    Enemy* enemy4 = new Enemy("enemyBlack4.png", 300);
-    Enemy* enemy5 = new Enemy("enemyBlack5.png", 400);
+    Enemy* enemy1 = new Enemy("enemyBlack1.png", 500,500);
+    Enemy* enemy4 = new Enemy("enemyBlack4.png", 300,700);
+    Enemy* enemy2 = new Enemy("enemyBlack2.png", 600, 800);
+    Enemy* enemy3 = new Enemy("enemyBlack3.png", 400, 400);
+
     std::vector<Bullet> player_bullets;
+    std::vector<Bullet> enemy_bullets;
 	
     update();
 
@@ -61,15 +62,27 @@ int main()
         lastTime = currentTime;
         spaceship->draw();
         enemy1->draw();
-        //enemy2->draw(); 
-        //enemy3->draw();
         enemy4->draw();
-        //enemy5->draw();
-        enemy1->move();
-        //enemy2->move(1000);
-        //enemy3->move(2000);
-        enemy4->move();
-        //enemy5->move(4000);
+        enemy2->draw();
+        enemy3->draw();
+    //    enemy1->attack(1, currentTime);
+   //    enemy4->move(5);
+        enemy2->swirl(1,currentTime);
+    //    enemy3->zigzag(1, currentTime);
+        
+        /*
+        for (auto& bullet : enemy_bullets) {
+            bullet.draw();
+        }
+        for (auto& bullet : enemy_bullets) {
+            bullet.update(delta);
+            if (bullet.outOfScreen()) {
+                cout << "\nBullet hit the top edge";
+                enemy_bullets.erase(std::remove(enemy_bullets.begin(), enemy_bullets.end(), bullet), enemy_bullets.end());
+            }
+        }
+        enemy4->shoot(enemy_bullets, 2000);
+        */
 
         for (auto& bullet : player_bullets) {
             bullet.draw();
@@ -94,6 +107,7 @@ int main()
                 player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
             }
         }
+       
  
         update();
     }
@@ -107,7 +121,7 @@ void explosion(std::vector<Bullet> bullets, Player* player) {
 
     //player->death();
 }
-
+/*
 bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2) {
     // Combine edges from both hitboxes
     std::vector<Vector2> axes;
@@ -158,3 +172,4 @@ std::pair<float, float> project(const std::vector<Vector2>& shape, const Vector2
 bool overlap(float minA, float maxA, float minB, float maxB) {
     return !(minA > maxB || minB > maxA);
 }
+*/
