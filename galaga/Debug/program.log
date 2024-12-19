@@ -1,3 +1,15 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (.\Debug\) contains files shared from another project (galaga.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Bullet.cpp
   Enemy.cpp
-  program.vcxproj -> C:\Users\notpa\OneDrive\Documents\GitHub\galaga\galaga\Debug\program.exe
+  Player.cpp
+  program.cpp
+C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\program.cpp(72,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\program.cpp(74,25): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\program.cpp(75,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  timer.cpp
+  World.cpp
+  Generating Code...
+Bullet.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+2D_graphics_ver1.lib(2D_graphics.obj) : warning LNK4099: PDB '' was not found with '2D_graphics_ver1.lib(2D_graphics.obj)' or at ''; linking object as if no debug info
+2D_graphics_ver1.lib(shared_memory.obj) : warning LNK4099: PDB '' was not found with '2D_graphics_ver1.lib(shared_memory.obj)' or at ''; linking object as if no debug info
+  program.vcxproj -> C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\Debug\program.exe
