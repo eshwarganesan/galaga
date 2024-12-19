@@ -37,11 +37,10 @@ void Enemy::draw() {
 	draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
 }
 void Enemy::spawn(float xPosition) {
-	if (xPosition <= 300) {
+	if (yPosition <= 300) {
 		return;
 	}
-	this->xPosition;
-	this->xPosition = xPosition - 10;
+	this->yPosition -= 10;
 	return;
 
 }

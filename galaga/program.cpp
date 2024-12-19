@@ -56,10 +56,10 @@ int main()
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
     
-    enemies.push_back(Enemy("enemyBlack1.png", 500, 500));
-    enemies.push_back(Enemy("enemyBlack4.png", 300, 700));
-    enemies.push_back(Enemy("enemyBlack2.png", 300, 600));
-    enemies.push_back(Enemy("enemyBlack3.png", 400, 400));
+    enemies.push_back(Enemy("enemyBlack1.png", 200, 800));
+    enemies.push_back(Enemy("enemyBlack4.png", 300, 800));
+    enemies.push_back(Enemy("enemyBlack2.png", 400, 800));
+    enemies.push_back(Enemy("enemyBlack3.png", 500, 800));
 
     double fps = 0.0;
     while (true) {
@@ -81,6 +81,10 @@ int main()
         for (auto& enemy : enemies) {
             enemy.draw();
         }
+        enemies[0].spawn(100);
+        enemies[1].spawn(300);
+        enemies[2].spawn(500);
+        enemies[3].spawn(700);
      //   enemy1->attack(1, currentTime);
       //  enemy4->move(5);
         enemies[1].swirl(1,currentTime,600,300); // use ufo PNG
