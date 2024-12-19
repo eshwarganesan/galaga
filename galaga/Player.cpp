@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "2D_graphics.h"
 #include <iostream>
+#include "timer.h"
 
 
 using namespace std;
@@ -12,15 +13,34 @@ Player::Player(char *filename) {
 	scale = 0.7;
 	angle = 0;
 	speed = 500.0;
-
+	exploding = false;
+	alive = true;
+	animationStartTime = 0;
 	height = 65 * scale;
 	width = 98 * scale;
 
 	create_sprite(filename, player_id);
+	create_sprite("/sprites/player_Explosion3.png", explosion_id[0]);
+	create_sprite("/sprites/player_Explosion4.png", explosion_id[1]);
 }
 
 void Player::draw() {
-	draw_sprite(player_id, xPosition, yPosition, angle, scale);
+	if (exploding) {
+		double elapsedTime = high_resolution_time() - animationStartTime;
+		if (elapsedTime < 0.0333) {
+			draw_sprite(explosion_id[0], xPosition, yPosition, angle, 1);
+		}
+		else if (elapsedTime < 0.0666) {
+			draw_sprite(explosion_id[1], xPosition, yPosition, angle, 1);
+		}
+		else {
+			this->alive = false;
+		}
+	}
+	else {
+		draw_sprite(player_id, xPosition, yPosition, angle, scale);
+	}
+	
 }
 
 void Player::move(double direction, double deltaTime) {
@@ -46,8 +66,9 @@ void Player::shoot(std::vector<Bullet>& bullets) {
 	bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition + 20, 500.0));
 }
 
-void Player::death(int frame) {
-	draw_sprite(explosion_id[frame], xPosition, yPosition, angle, scale);
+void Player::death_animation() {
+	this->exploding = true;
+	this->animationStartTime = high_resolution_time();
 }
 
 std::vector<Vector2> Player::getVertices() {

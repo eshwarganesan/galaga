@@ -13,14 +13,17 @@ public:
 	void draw();
 	void move(double direction, double deltaTime);
 	void shoot(std::vector<Bullet>& bullets);
-	void death(int frame);
+	void death_animation();
 	std::vector<Vector2> getVertices();
 	int player_id;
-	int explosion_id[4];
+	int explosion_id[2];
+	bool exploding;
+	bool alive;
 private:
 	double xPosition, yPosition;
 	double scale, angle;
 	double speed;
 	double height, width;
+	double animationStartTime;
 };
 

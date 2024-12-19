@@ -21,7 +21,6 @@ using namespace std;
 bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2);
 std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis);
 bool overlap(double minA, double maxA, double minB, double maxB);
-void explosion(std::vector<Bullet> bullets, Player* player);
 void play_sound(char* filename);
 
 int main()
@@ -113,7 +112,7 @@ int main()
             lastFire = currentTime;
         }
         if (KEY('P')) {
-            break;
+            spaceship->death_animation();
         }
         //check collision of player bullets
         for (auto& bullet : player_bullets) {
@@ -129,8 +128,12 @@ int main()
         //check collision of enemy bullets
 
         //check collision of enemies with players
- 
+        
+        
         update();
+        if (spaceship->alive == false) {
+            break;
+        }
     }
     
     delete spaceship;
@@ -139,12 +142,6 @@ int main()
     delete enemy3;
     delete enemy4;
 	return 0;
-}
-
-void explosion(std::vector<Bullet> bullets, Player* player) {
-    clear();
-
-    //player->death();
 }
 
 bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2) {
