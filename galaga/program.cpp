@@ -53,7 +53,6 @@ int main()
 
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
-    std::cout << "\nEnemy Hitbox: ";
     
     enemies.push_back(Enemy("enemyBlack1.png", 500, 500));
     enemies.push_back(Enemy("enemyBlack4.png", 300, 700));
@@ -120,13 +119,12 @@ int main()
         for (auto& bullet : player_bullets) {
             bullet.update(delta);
             if (bullet.outOfScreen()) {
-                cout << "\nBullet hit the top edge";
                 player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
             }
             for (auto& enemy : enemies) {
                 if (checkCollision(bullet.getVertices(), enemy.getVertices())) {
-                    cout << "\nCollision with enemy detected";
                     player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
+                    enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
                 }
             }
             
