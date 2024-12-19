@@ -101,8 +101,11 @@ int main()
         for (auto& bullet : player_bullets) {
             bullet.draw();
         }
+        for (auto& enemy_bullet : enemy_bullets) {
+            enemy_bullet.draw();
+        }
         if (KEY('O')) {
-            //enemy1->shoot(enemy_bullets);
+            enemies[0].shoot(enemy_bullets);
         }
         if (KEY('A')) {
             spaceship->move(-1, delta);
@@ -124,13 +127,22 @@ int main()
             for (auto& enemy : enemies) {
                 if (checkCollision(bullet.getVertices(), enemy.getVertices())) {
                     player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
-                    enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
+                    //enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
                 }
             }
             
         }
         //check collision of enemy bullets
-
+        for (auto& enemy_bullet : enemy_bullets) {
+            enemy_bullet.update(delta);
+            if (enemy_bullet.outOfScreen()) {
+                enemy_bullets.erase(std::remove(enemy_bullets.begin(), enemy_bullets.end(), enemy_bullet), enemy_bullets.end());
+            }
+            if (checkCollision(spaceship->getVertices(), enemy_bullet.getVertices()) && spaceship->exploding == false) {
+                spaceship->death_animation();
+                break;
+            }
+        }
         //check collision of enemies with players
         for (auto& enemy : enemies) {
             if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {

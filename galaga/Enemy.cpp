@@ -167,22 +167,9 @@ void Enemy::zigzag(float speed, float deltaTime) {
 }
 
 
-/*
-void Enemy::shoot(std::vector<Bullet>& bullets, double interval) {
-	double time_counter = 0;
-	double this_time = high_resolution_time();
-	double last_time = this_time;
-	for (;;) {
-		if (this_time - last_time >= interval * 10 ^ 6) {
-			bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition - 20, -500.0));
-			last_time = this_time;
-		}
-
-	}
-
-
+void Enemy::shoot(std::vector<Bullet>& bullets) {
+	bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition - 40, -500.0));
 }
-*/
 
 std::vector<Vector2> Enemy::getVertices() {
 	std::vector<Vector2> vertices;

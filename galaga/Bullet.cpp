@@ -21,9 +21,8 @@ void Bullet::draw() {
 }
 
 void Bullet::update(double deltaTime) {
-	if (this->y < 1280) { // Move upward
-		this->y += v * deltaTime;
-	}
+
+	this->y += v * deltaTime;
 }
 
 bool Bullet::outOfScreen() {
