@@ -16,6 +16,10 @@
 
 using namespace std;
 
+bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2);
+std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis);
+bool overlap(double minA, double maxA, double minB, double maxB);
+void explosion(std::vector<Bullet> bullets, Player* player);
 
 int main()
 {
@@ -106,6 +110,9 @@ int main()
                 cout << "\nBullet hit the top edge";
                 player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
             }
+            if (checkCollision(bullet.getVertices(), enemy1->getVertices())) {
+                cout << "\nCollision with enemy detected";
+            }
         }
        
  
@@ -121,7 +128,7 @@ void explosion(std::vector<Bullet> bullets, Player* player) {
 
     //player->death();
 }
-/*
+
 bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2) {
     // Combine edges from both hitboxes
     std::vector<Vector2> axes;
@@ -143,10 +150,10 @@ bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2
         auto resultA = project(hitbox1, axis);
         auto resultB = project(hitbox2, axis);
 
-        float minA = resultA.first;
-        float maxA = resultA.second;
-        float minB = resultB.first;
-        float maxB = resultB.second;
+        double minA = resultA.first;
+        double maxA = resultA.second;
+        double minB = resultB.first;
+        double maxB = resultB.second;
 
         if (!overlap(minA, maxA, minB, maxB)) {
             return false;  // No collision
@@ -156,12 +163,12 @@ bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2
     return true;  // Collision detected
 }
 
-std::pair<float, float> project(const std::vector<Vector2>& shape, const Vector2& axis) {
-    float min = shape[0].x * axis.x + shape[0].y * axis.y;
-    float max = min;
+std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis) {
+    double min = shape[0].x * axis.x + shape[0].y * axis.y;
+    double max = min;
 
     for (const auto& vertex : shape) {
-        float projection = vertex.x * axis.x + vertex.y * axis.y;
+        double projection = vertex.x * axis.x + vertex.y * axis.y;
         if (projection < min) min = projection;
         if (projection > max) max = projection;
     }
@@ -169,7 +176,6 @@ std::pair<float, float> project(const std::vector<Vector2>& shape, const Vector2
     return std::make_pair(min, max);
 }
 
-bool overlap(float minA, float maxA, float minB, float maxB) {
+bool overlap(double minA, double maxA, double minB, double maxB) {
     return !(minA > maxB || minB > maxA);
 }
-*/
