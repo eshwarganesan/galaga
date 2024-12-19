@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cmath>
+#include <fstream>
 #include "Bullet.h"
 #include <vector>
 #include "timer.h"
@@ -11,7 +12,8 @@
 #include "Player.h"
 #include "World.h"
 #include "2D_graphics.h" // use the 2D graphics library
-
+#include <MMSystem.h>
+#pragma comment(lib,"winmm.lib")
 #include "timer.h" // use the time / clock reading function
 
 using namespace std;
@@ -20,6 +22,7 @@ bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2
 std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis);
 bool overlap(double minA, double maxA, double minB, double maxB);
 void explosion(std::vector<Bullet> bullets, Player* player);
+void play_sound(char* filename);
 
 int main()
 {
@@ -49,12 +52,16 @@ int main()
 
     std::vector<Bullet> player_bullets;
     std::vector<Bullet> enemy_bullets;
+    std::vector<Enemy> enemies;
 	
     update();
 
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
- 
+    std::cout << "\nEnemy Hitbox: ";
+    for (const auto& vertex : enemy1->getVertices()) {
+        std::cout << "(" << vertex.x << ", " << vertex.y << ") ";
+    }
 
     while (true) {
         clear();
@@ -92,7 +99,7 @@ int main()
             bullet.draw();
         }
         if (KEY('O')) {
-            enemy1->shoot(enemy_bullets);
+            //enemy1->shoot(enemy_bullets);
         }
         if (KEY('A')) {
             spaceship->move(-1, delta);
@@ -102,11 +109,13 @@ int main()
         }
         if (KEY('L') && fireDelay > 0.5) {
             spaceship->shoot(player_bullets);
+            play_sound("Bullet_Shooting.wav");
             lastFire = currentTime;
         }
         if (KEY('P')) {
             break;
         }
+        //check collision of player bullets
         for (auto& bullet : player_bullets) {
             bullet.update(delta);
             if (bullet.outOfScreen()) {
@@ -117,12 +126,18 @@ int main()
                 cout << "\nCollision with enemy detected";
             }
         }
-       
+        //check collision of enemy bullets
+
+        //check collision of enemies with players
  
         update();
     }
-
+    
     delete spaceship;
+    delete enemy1;
+    delete enemy2;
+    delete enemy3;
+    delete enemy4;
 	return 0;
 }
 
@@ -181,4 +196,44 @@ std::pair<double, double> project(const std::vector<Vector2>& shape, const Vecto
 
 bool overlap(double minA, double maxA, double minB, double maxB) {
     return !(minA > maxB || minB > maxA);
+}
+
+void play_sound(char *filename) {
+
+    char* p_buffer{};
+    int N_buffer{};
+
+    char* p_data{};
+    int N_data{};
+
+    ifstream fin;
+    fin.open(filename, ios::binary);
+
+    if (!fin) {
+        cout << "\nfile open error";
+        return;
+    }
+
+    fin.seekg(0, ios::end);
+
+    N_buffer = fin.tellg();
+
+    fin.seekg(0, ios::beg);
+
+    p_buffer = new char[N_buffer];
+
+    if (p_buffer == NULL) {
+        cout << "\ndynamic memory allocation error";
+        return;
+    }
+
+    fin.read(p_buffer, N_buffer);
+
+    fin.close();
+
+
+    PlaySoundA(p_buffer, NULL, SND_MEMORY | SND_ASYNC);
+
+    delete p_buffer;
+
 }

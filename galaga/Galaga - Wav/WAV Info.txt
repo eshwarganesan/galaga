@@ -1,6 +1,0 @@
-There's a ton of audio files you dont have to use them from their initial purpose (ie, gamestart could be the end music)
-
-main ones that need to be used would be 
-
-- Enemy#killed
-- Bullets
