@@ -44,7 +44,7 @@ int main()
     Player* spaceship = new Player("/sprites/PNG/playerShip3_red.png");
     Enemy* enemy1 = new Enemy("enemyBlack1.png", 500,500);
     Enemy* enemy4 = new Enemy("enemyBlack4.png", 300,700);
-    Enemy* enemy2 = new Enemy("enemyBlack2.png", 600, 800);
+    Enemy* enemy2 = new Enemy("enemyBlack2.png", 300, 600);
     Enemy* enemy3 = new Enemy("enemyBlack3.png", 400, 400);
 
     std::vector<Bullet> player_bullets;
@@ -69,10 +69,10 @@ int main()
         enemy4->draw();
         enemy2->draw();
         enemy3->draw();
-        enemy1->attack(1, currentTime);
-        enemy4->move(5);
-        enemy2->swirl(1,currentTime);
-        enemy3->zigzag(1, currentTime);
+     //   enemy1->attack(1, currentTime);
+      //  enemy4->move(5);
+        enemy2->swirl(1,currentTime,600,300); // use ufo PNG
+      //  enemy3->zigzag(1, currentTime);
         
         /*
         for (auto& bullet : enemy_bullets) {

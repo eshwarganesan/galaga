@@ -76,12 +76,46 @@ void Enemy::attack(float speed, float deltaTime) {
 		
 }
 
-void Enemy::swirl(float speed, float deltaTime) {
+void Enemy::swirl(float speed, float deltaTime, float x, float y) {
 	double radius = 100;
-	angle += 2.0* deltaTime*10e-4;
-	this->xPosition = 600 + radius * sin(angle);
-	this->yPosition = 300 + radius * cos(angle);
-	return;
+
+	float this_time = deltaTime;
+	float last_time;
+	float new_start = deltaTime - last_time;
+	if(attacking){
+		for (int i = 1; i <= 360; i++) {
+			angle += 2.0 * i * 10e-8;
+			this->xPosition = x + radius * sin(angle * speed);
+			this->yPosition = y + radius * cos(angle * speed) - 20 * speed * new_start;
+			if (this->yPosition <= 50) {
+				attacking = false;
+		
+				return;
+			}
+		}
+	}
+	else {
+		this->yPosition = yPosition + 20 * speed;
+		if (this->yPosition >= 690) {
+			last_time = new_start;
+			attacking = true;
+			this->xPosition = x;
+			this->yPosition = (690-y) + radius * cos(angle * speed) + 20 * speed * new_start;
+			break;
+		}
+		
+			return;
+	}
+	/* Use this for it to go straight up and come back down for some reason
+	else {
+		this->yPosition = yPosition + 20 * speed;
+		if (this->yPosition >= 690) {
+			attacking = true;
+			return;
+		}
+	}
+	*/
+	
 }
 
 void Enemy::zigzag(float speed, float deltaTime) {
