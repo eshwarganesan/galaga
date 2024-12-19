@@ -44,10 +44,6 @@ int main()
     //create_sprite("/sprites/Backgrounds/black.png", background_id);
     create_sprite("/sprites/Background3.png", background_id);
     Player* spaceship = new Player("/sprites/PNG/playerShip3_red.png");
-    Enemy* enemy1 = new Enemy("enemyBlack1.png", 500,500);
-    Enemy* enemy4 = new Enemy("enemyBlack4.png", 300,700);
-    Enemy* enemy2 = new Enemy("enemyBlack2.png", 300, 600);
-    Enemy* enemy3 = new Enemy("enemyBlack3.png", 400, 400);
 
     std::vector<Bullet> player_bullets;
     std::vector<Bullet> enemy_bullets;
@@ -58,10 +54,11 @@ int main()
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
     std::cout << "\nEnemy Hitbox: ";
-    for (const auto& vertex : enemy1->getVertices()) {
-        std::cout << "(" << vertex.x << ", " << vertex.y << ") ";
-    }
-
+    
+    enemies.push_back(Enemy("enemyBlack1.png", 500, 500));
+    enemies.push_back(Enemy("enemyBlack4.png", 300, 700));
+    enemies.push_back(Enemy("enemyBlack2.png", 300, 600));
+    enemies.push_back(Enemy("enemyBlack3.png", 400, 400));
     while (true) {
         clear();
         //background
@@ -71,13 +68,13 @@ int main()
         double fireDelay = currentTime - lastFire;
         lastTime = currentTime;
         spaceship->draw();
-        enemy1->draw();
-        enemy4->draw();
-        enemy2->draw();
-        enemy3->draw();
+        
+        for (auto& enemy : enemies) {
+            enemy.draw();
+        }
      //   enemy1->attack(1, currentTime);
       //  enemy4->move(5);
-        enemy2->swirl(1,currentTime,600,300); // use ufo PNG
+        enemies[1].swirl(1,currentTime,600,300); // use ufo PNG
       //  enemy3->zigzag(1, currentTime);
         
         /*
@@ -121,14 +118,23 @@ int main()
                 cout << "\nBullet hit the top edge";
                 player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
             }
-            if (checkCollision(bullet.getVertices(), enemy1->getVertices())) {
-                cout << "\nCollision with enemy detected";
+            for (auto& enemy : enemies) {
+                if (checkCollision(bullet.getVertices(), enemy.getVertices())) {
+                    cout << "\nCollision with enemy detected";
+                    player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
+                }
             }
+            
         }
         //check collision of enemy bullets
 
         //check collision of enemies with players
-        
+        for (auto& enemy : enemies) {
+            if (checkCollision(spaceship->getVertices(), enemy.getVertices())) {
+                spaceship->death_animation();
+                break;
+            }
+        }
         
         update();
         if (spaceship->alive == false) {
@@ -137,10 +143,6 @@ int main()
     }
     
     delete spaceship;
-    delete enemy1;
-    delete enemy2;
-    delete enemy3;
-    delete enemy4;
 	return 0;
 }
 
