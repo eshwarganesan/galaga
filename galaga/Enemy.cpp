@@ -17,7 +17,7 @@ using namespace std;
 //stage 10 All enemies go everywhere very chaotic, very hard to actually win, practically impossible
 
 
-const int NUM_SECONDS = 10;
+
 
 
 
@@ -80,45 +80,58 @@ void Enemy::attack(float speed, float deltaTime) {
 
 void Enemy::swirl(float speed, float deltaTime, float x, float y) {
 	double radius = 100;
-
-	float this_time = deltaTime;
+	float start_time = deltaTime;
 	float last_time;
-	float new_start = deltaTime - last_time;
-	if(attacking){
-		for (int i = 1; i <= 360; i++) {
-			angle += 2.0 * i * 10e-8;
-			this->xPosition = x + radius * sin(angle * speed);
-			this->yPosition = y + radius * cos(angle * speed) - 20 * speed * new_start;
-			if (this->yPosition <= 50) {
-				attacking = false;
-		
-				return;
+	float new_time = deltaTime - last_time;
+	
+		if (attacking) {
+			cout << "patrick says bye\n";
+			for (int i = 1; i <= 360; i++) {
+				angle += 2.0 * i * 10e-8;
+				this->xPosition = x + radius * sin(angle * speed);
+				this->yPosition = y + z - 20 * speed * new_time;
+				cout << "Patrick is tired\n " << z << ":\t" <<i;
+				if (this->yPosition <= 50) {
+					attacking = false;
+
+					return;
+				}
 			}
 		}
-	}
-	else {
-		this->yPosition = yPosition + 20 * speed;
-		if (this->yPosition >= 690) {
-			last_time = new_start;
-			attacking = true;
-			this->xPosition = x;
-			this->yPosition = (690-y) + radius * cos(angle * speed) + 20 * speed * new_start;
-			return;
+		else {
+			if (this->yPosition >= 690) {
+				attacking = true;
+				float last_time = new_time;
+				//	this->yPosition = 680;
+				cout << "Patrick says high\n";
+
+				z = 680;
+				return;
+
+			}
+			this->yPosition = yPosition + 5 * speed;
+			cout << yPosition << ":" << y << "\n";
 		}
+	
+}
 		
-			return;
-	}
+	
+
 	/* Use this for it to go straight up and come back down for some reason
 	else {
 		this->yPosition = yPosition + 20 * speed;
 		if (this->yPosition >= 690) {
+		for (int i = 1; i <= 360; i++) {
+			angle += 2.0 * i * 10e-8;
+			this->xPosition = x + radius * sin(angle * speed);
+			this->yPosition = yPosition*2 - radius * cos(angle * speed) - 20 * speed * this_time;
 			attacking = true;
 			return;
 		}
 	}
 	*/
 	
-}
+
 
 void Enemy::zigzag(float speed, float deltaTime) {
 	if (movingRight && attacking) {

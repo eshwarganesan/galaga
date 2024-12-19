@@ -28,12 +28,14 @@ public:
 	void swirl(float speed, float deltaTime, float x, float y);
 	void zigzag(float speed, float deltaTime);
 	std::vector<Vector2> getVertices();
-	void shoot(std::vector<Bullet>& bullets, double interval);
+	void shoot(std::vector<Bullet>& bullets);
 	void death(int frame);
 	int enemy_id;
 	int explosion_id[4];
 	void sim_step(double dt);
 	float x, y;
+	float z=0;
+	float last_time = 0;
 private:
 	float speed;
 	double xPosition, yPosition;
