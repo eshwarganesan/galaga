@@ -91,6 +91,9 @@ int main()
         for (auto& bullet : player_bullets) {
             bullet.draw();
         }
+        if (KEY('O')) {
+            enemy1->shoot(enemy_bullets);
+        }
         if (KEY('A')) {
             spaceship->move(-1, delta);
         }

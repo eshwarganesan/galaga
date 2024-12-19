@@ -101,7 +101,7 @@ void Enemy::swirl(float speed, float deltaTime, float x, float y) {
 			attacking = true;
 			this->xPosition = x;
 			this->yPosition = (690-y) + radius * cos(angle * speed) + 20 * speed * new_start;
-			break;
+			return;
 		}
 		
 			return;
