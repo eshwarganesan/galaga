@@ -36,7 +36,15 @@ width = 86*scale;
 void Enemy::draw() {
 	draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
 }
+void Enemy::spawn(float xPosition) {
+	if (xPosition <= 300) {
+		return;
+	}
+	this->xPosition;
+	this->xPosition = xPosition - 10;
+	return;
 
+}
 void Enemy::move(float speed) { // range of speed should be between 1 to 10
 	if (movingRight) {
 		this->xPosition = xPosition + speed;
