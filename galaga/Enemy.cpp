@@ -159,7 +159,7 @@ void Enemy::shoot(std::vector<Bullet>& bullets, double interval) {
 	double last_time = this_time;
 	for (;;) {
 		if (this_time - last_time >= interval * 10 ^ 6) {
-			bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition - 20, 500.0));
+			bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition - 20, -500.0));
 			last_time = this_time;
 		}
 
