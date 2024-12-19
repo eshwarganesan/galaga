@@ -27,6 +27,8 @@ const int NUM_SECONDS = 10;
 	scale = 0.90;
 	angle = 0;
 	speed = 500.0;
+height = 86*scale;
+width = 86*scale;
 
 	create_sprite(file_name, enemy_id);
 }
