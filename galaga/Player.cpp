@@ -81,3 +81,9 @@ std::vector<Vector2> Player::getVertices() {
 
 	return vertices;
 }
+
+void Player::respawn() {
+	this->xPosition = 640;
+	this->exploding = false;
+	this->alive = true;
+}

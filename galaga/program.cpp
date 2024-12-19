@@ -48,6 +48,8 @@ int main()
     std::vector<Bullet> player_bullets;
     std::vector<Bullet> enemy_bullets;
     std::vector<Enemy> enemies;
+
+    int lives = 3;
 	
     update();
 
@@ -140,6 +142,7 @@ int main()
             }
             if (checkCollision(spaceship->getVertices(), enemy_bullet.getVertices()) && spaceship->exploding == false) {
                 spaceship->death_animation();
+                lives--;
                 break;
             }
         }
@@ -147,13 +150,20 @@ int main()
         for (auto& enemy : enemies) {
             if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {
                 spaceship->death_animation();
+                lives--;
                 break;
             }
         }
         
         update();
         if (spaceship->alive == false) {
-            break;
+            if (lives > 0) {
+                spaceship->respawn();
+                Sleep(3000);
+            }
+            else {
+                break;
+            }
         }
     }
     

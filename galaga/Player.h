@@ -14,6 +14,7 @@ public:
 	void move(double direction, double deltaTime);
 	void shoot(std::vector<Bullet>& bullets);
 	void death_animation();
+	void respawn();
 	std::vector<Vector2> getVertices();
 	int player_id;
 	int explosion_id[2];
