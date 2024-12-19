@@ -59,6 +59,8 @@ int main()
     enemies.push_back(Enemy("enemyBlack4.png", 300, 700));
     enemies.push_back(Enemy("enemyBlack2.png", 300, 600));
     enemies.push_back(Enemy("enemyBlack3.png", 400, 400));
+
+    double fps = 0.0;
     while (true) {
         clear();
         //background
@@ -69,6 +71,12 @@ int main()
         lastTime = currentTime;
         spaceship->draw();
         
+        if (delta > 0) {
+            fps = 1.0 / delta;
+        }
+
+        cout << "\nFPS: " << fps << "\r";
+
         for (auto& enemy : enemies) {
             enemy.draw();
         }
@@ -108,9 +116,6 @@ int main()
             play_sound("Bullet_Shooting.wav");
             lastFire = currentTime;
         }
-        if (KEY('P')) {
-            spaceship->death_animation();
-        }
         //check collision of player bullets
         for (auto& bullet : player_bullets) {
             bullet.update(delta);
@@ -130,7 +135,7 @@ int main()
 
         //check collision of enemies with players
         for (auto& enemy : enemies) {
-            if (checkCollision(spaceship->getVertices(), enemy.getVertices())) {
+            if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {
                 spaceship->death_animation();
                 break;
             }

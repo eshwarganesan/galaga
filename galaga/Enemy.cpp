@@ -85,12 +85,12 @@ void Enemy::swirl(float speed, float deltaTime, float x, float y) {
 	float new_time = deltaTime - last_time;
 	
 		if (attacking) {
-			cout << "patrick says bye\n";
+			//cout << "patrick says bye\n";
 			for (int i = 1; i <= 360; i++) {
 				angle += 2.0 * i * 10e-8;
 				this->xPosition = x + radius * sin(angle * speed);
 				this->yPosition = y + z - 20 * speed * new_time;
-				cout << "Patrick is tired\n " << z << ":\t" <<i;
+				//cout << "Patrick is tired\n " << z << ":\t" <<i;
 				if (this->yPosition <= 50) {
 					attacking = false;
 
@@ -103,7 +103,7 @@ void Enemy::swirl(float speed, float deltaTime, float x, float y) {
 				attacking = true;
 				float last_time = new_time;
 				//	this->yPosition = 680;
-				cout << "Patrick says high\n";
+				//cout << "Patrick says high\n";
 
 				z = 680;
 				return;
