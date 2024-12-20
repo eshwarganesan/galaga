@@ -24,6 +24,59 @@ bool overlap(double minA, double maxA, double minB, double maxB);
 void play_sound(char* filename);
 void spawnWave(std::vector<Enemy>& enemies, long int wave);
 
+void gameover() {
+    initialize_graphics();
+    int GameOver_id;
+    clear();
+    create_sprite("Gameover_screen.JPG", GameOver_id);
+    double x, y, q, scale;
+
+    x = 0.0;
+    y = 0.0;
+    q = 0.0;
+    scale = -1.0;
+    draw_sprite(GameOver_id, x, y, q, scale);
+    update();
+}
+
+void Victory() {
+    int Victory_id;
+    clear();
+    create_sprite("Victory_screen.JPG", Victory_id);
+    double x, y, q, scale;
+
+    x = 0.0;
+    y = 0.0;
+    q = 0.0;
+    scale = -1.0;
+    draw_sprite(Victory_id, x, y, q, scale);
+    update();
+}
+void wave_number_png(int wave) {
+    int wave_id[5];
+    create_sprite("Wave1.png", wave_id[0]);
+    create_sprite("Wave2.png", wave_id[1]);
+    create_sprite("Wave3.png", wave_id[2]);
+    create_sprite("Wave4.png", wave_id[3]);
+    create_sprite("Wave5.png", wave_id[4]);
+
+    /*
+    create_sprite("Wave6.png", wave_id[0]);
+    create_sprite("Wave7.png", wave_id[0]);
+    create_sprite("Wave8.png", wave_id[0]);
+    create_sprite("Wave9.png", wave_id[0]);
+    create_sprite("Wave10.png", wave_id[0]);
+    */
+
+    double x, y, q, scale;
+    x = 0.0;
+    y = 0.0;
+    q = 0.0;
+    scale = -1.0;
+    draw_sprite(wave_id[wave - 1], x, y, q, scale);
+    update();
+}
+
 //Eshwar and Patrick
 int main()
 {
@@ -149,12 +202,14 @@ int main()
                 spawnWave(enemies, wave);
                 player_bullets.clear();
                 enemy_bullets.clear();
+                wave_number_png(wave);
                 Sleep(4000);
                 spaceship->respawn();
             }
             else {
                 player_bullets.clear();
                 enemy_bullets.clear();
+                Victory();
                 Sleep(4000);
                 break;
             }
@@ -233,6 +288,7 @@ int main()
         if (spaceship->alive == false) {
             if (lives > 0) {
                 spaceship->respawn();
+                gameover();
                 Sleep(3000);
             }
             else {
@@ -374,70 +430,3 @@ void spawnWave(std::vector<Enemy>& enemies, long int wave) {
     }
 }
 
-void gameover() {
-    initialize_graphics();
-    int GameOver_id;
-    clear();
-    create_sprite("Gameover_screen.JPG", GameOver_id);
-    double x, y, q, scale;
-
-    x = 0.0;
-    y = 0.0;
-    q = 0.0;
-    scale = -1.0;
-    draw_sprite(GameOver_id, x, y, q, scale);
-    update();
-    while (1) {
-        getchar();
-        break;
-    }
-}
-
-void Victory() {
-    initialize_graphics();
-    int Victory_id;
-    clear();
-    create_sprite("Victory_screen.JPG", Victory_id);
-    double x, y, q, scale;
-
-    x = 0.0;
-    y = 0.0;
-    q = 0.0;
-    scale = -1.0;
-    draw_sprite(Victory_id, x, y, q, scale);
-    update();
-    while (1) {
-        getchar();
-        break;
-    }
-}
-void wave_number_png(int wave) {
-    initialize_graphics();
-    int wave_id[5];
-    clear();
-    create_sprite("Wave1.png", wave_id[0]);
-    create_sprite("Wave2.png", wave_id[1]);
-    create_sprite("Wave3.png", wave_id[2]);
-    create_sprite("Wave4.png", wave_id[3]);
-    create_sprite("Wave5.png", wave_id[4]);
-
-    /*
-    create_sprite("Wave6.png", wave_id[0]);
-    create_sprite("Wave7.png", wave_id[0]);
-    create_sprite("Wave8.png", wave_id[0]);
-    create_sprite("Wave9.png", wave_id[0]);
-    create_sprite("Wave10.png", wave_id[0]);
-    */
-
-    double x, y, q, scale;
-    x = 0.0;
-    y = 0.0;
-    q = 0.0;
-    scale = 1.0;
-    draw_sprite(wave_id[wave], x, y, q, scale);
-    update();
-    while (1) {
-        getchar();
-        break;
-    }
-}
