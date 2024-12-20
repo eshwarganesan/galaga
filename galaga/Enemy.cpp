@@ -44,7 +44,7 @@ void Enemy::move(float speed, float deltaTime) { // range of speed should be bet
 	//6 - no movement
 	if(type==1){ 
 		if (movingRight) {
-			xPosition = xPosition + speed;
+			this->xPosition = xPosition + speed;
 			if (this->xPosition >= 1200) {
 				movingRight = false;
 				return;

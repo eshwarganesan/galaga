@@ -151,6 +151,7 @@ int main()
                 enemy_bullets.clear();
                 Sleep(4000);
                 spaceship->respawn();
+                /*
                 if (wave == 1) {
                     enemies[2].move(10, currentTime);
                     enemies[4].move(10, currentTime);
@@ -177,7 +178,7 @@ int main()
                     enemies[2].move(10, currentTime);
                     enemies[3].move(10, currentTime);
                     enemies[4].move(10, currentTime);
-                }
+                } */
             }
             else {
                 player_bullets.clear();
@@ -186,7 +187,12 @@ int main()
                 break;
             }
         }
-
+        enemies[1].move(10, currentTime);
+        enemies[2].move(10, currentTime);
+        enemies[3].move(10, currentTime);
+        enemies[4].move(10, currentTime);
+        enemies[5].move(10, currentTime);
+        
         for (auto& enemy : enemies) {
             enemy.draw();
         }
@@ -365,7 +371,6 @@ void play_sound(char *filename) {
 
 //Eshwar and Patrick
 void spawnWave(std::vector<Enemy>& enemies, long int wave) {
-   float  t= high_resolution_time();
     switch (wave) {
     case 1:
         //3 stationary enemies
