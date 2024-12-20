@@ -32,6 +32,7 @@ public:
 	std::vector<Vector2> getVertices();
 	void shoot(std::vector<Bullet>& bullets);
 	void death(int frame);
+	bool operator==(const Enemy& other) const;
 	int enemy_id;
 	int explosion_id[4];
 	void sim_step(double dt);

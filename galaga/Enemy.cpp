@@ -188,3 +188,7 @@ std::vector<Vector2> Enemy::getVertices() {
 	vertices.push_back({ xPosition - width / 2, yPosition - height / 2 });      // bot left vertex
 	return vertices;
 }
+
+bool Enemy::operator==(const Enemy& other) const {
+	return this->xPosition == other.xPosition && this->yPosition == other.yPosition;
+}

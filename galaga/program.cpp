@@ -10,7 +10,6 @@
 
 #include <Windows.h> // also needed for the 2D graphics library
 #include "Player.h"
-#include "World.h"
 #include "2D_graphics.h" // use the 2D graphics library
 #include <MMSystem.h>
 #pragma comment(lib,"winmm.lib")
@@ -22,6 +21,7 @@ bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2
 std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis);
 bool overlap(double minA, double maxA, double minB, double maxB);
 void play_sound(char* filename);
+void spawnWave(std::vector<Enemy>& enemies, int wave, int enemy_count);
 
 int main()
 {
@@ -49,8 +49,9 @@ int main()
     std::vector<Bullet> enemy_bullets;
     std::vector<Enemy> enemies;
 
-    int lives = 3;
-	
+    double lives = 3;
+    double score = 0;
+    int wave = 1;
     update();
 
     double lastTime = high_resolution_time();
@@ -66,6 +67,10 @@ int main()
         clear();
         //background
         draw_sprite(background_id, 640, 360, 0, 5);
+        text("Lives: ", 10, 700, 0.4);
+        text(lives, 80, 700, 0.4);
+        text("Score: ", 10, 680, 0.4);
+        text(score, 90, 680, 0.4);
         double currentTime = high_resolution_time();
         double delta = currentTime - lastTime;
         double fireDelay = currentTime - lastFire;
@@ -81,10 +86,7 @@ int main()
         for (auto& enemy : enemies) {
             enemy.draw();
         }
-        enemies[0].spawn(100);
-        enemies[1].spawn(300);
-        enemies[2].spawn(500);
-        enemies[3].spawn(700);
+        
      //   enemy1->attack(1, currentTime);
       //  enemy4->move(5);
         enemies[1].swirl(1,currentTime,600,300); // use ufo PNG
@@ -133,7 +135,8 @@ int main()
             for (auto& enemy : enemies) {
                 if (checkCollision(bullet.getVertices(), enemy.getVertices())) {
                     player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
-                    //enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
+                    enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
+                    score += 1;
                 }
             }
             
@@ -263,5 +266,16 @@ void play_sound(char *filename) {
     PlaySoundA(p_buffer, NULL, SND_MEMORY | SND_ASYNC);
 
     delete p_buffer;
+
+}
+
+void spawnWave(std::vector<Enemy>& enemies, int wave, int enemy_count) {
+    int number_to_spawn;
+    if (enemy_count == 10) {
+        number_to_spawn = 10;
+    }
+    else {
+        number_to_spawn = wave + 1;
+    }
 
 }
