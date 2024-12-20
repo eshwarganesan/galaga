@@ -4,12 +4,24 @@
 #include <windows.h>
 #include "timer.h" // use the time / clock reading function
 using namespace std;
+//10 stage design // 1, b and f// 2, downward // 3, swirl// 4, zig zag // 5 , I dont even know
+//stage 1 tutorial like, passive enemies :black1 black2 x 5 enemies going back and forth
+//stage 2 enemies start moving downwards to attack / black1, black2, g1, g2 with some going downwards at every X time
+//stage 3 enemies start flying a little bit of swirl / g1,g2,g3 
+//stage 4 same but faster // r1, r2, r3
+//stage 5  blue1, blue2, blue 3, blue 4
+//stage 6 r3, r4, bu4, bl3, bl4
+//stage 7 g4, r4, bu4, bl4, gr2, r2, bu2, bl2,
+//stage 8 g4, r4, bu4, bl4, gr2, r2, bu2, bl2, g5, r5,
+//stage 9 bl1, bl2, bl3, bl4, bl5, bu1, bu2, bu3, bu4, bu5
+//stage 10 All enemies go everywhere very chaotic, very hard to actually win, practically impossible
 
 
 
 
 
- Enemy::Enemy(char *file_name, double xPosition1, double yPosition1,int type) {
+
+ Enemy::Enemy(char *file_name, double xPosition1, double yPosition1) {
 	yPosition = yPosition1;
 	xPosition = xPosition1;
 	scale = 0.90;
@@ -60,7 +72,6 @@ void Enemy::move(float speed, float deltaTime) { // range of speed should be bet
 	//3 - zigzag downwards - comes back at initial position
 	//4 - zigzag laterally
 	//5 - circle swirl downwards - comes back at initial position
-	//6 - no movement
 	if(type==1){ 
 		if (movingRight) {
 			this->xPosition = xPosition + speed;
@@ -81,7 +92,7 @@ void Enemy::move(float speed, float deltaTime) { // range of speed should be bet
 	}
 	else if (type == 2) {
 		if (attacking) {
-			yPosition = yPosition + speed;
+			this->yPosition = yPosition + speed;
 			if (this->yPosition >= 690) {
 				attacking = false;
 				return;
@@ -100,10 +111,10 @@ void Enemy::move(float speed, float deltaTime) { // range of speed should be bet
 	else if (type == 3) {
 		static double angle = 0.0; 
 		double radius = 100.0;    
-		yPosition = yPosition;
+		yPosition = y;
 		angle += 0.05;
 		if (attacking) {
-			this->xPosition = xPosition + radius * sin(angle);
+			this->xPosition = x + radius * sin(angle);
 			this->yPosition -= 25 * speed * deltaTime;
 			if (this->yPosition <= 50) {
 				yPosition = y;
@@ -112,7 +123,7 @@ void Enemy::move(float speed, float deltaTime) { // range of speed should be bet
 			}
 		}
 		else {
-			this->xPosition = xPosition + radius * sin(angle);
+			this->xPosition = x + radius * sin(angle);
 		}
 	}
 	else if (type ==4){
@@ -151,8 +162,8 @@ void Enemy::move(float speed, float deltaTime) { // range of speed should be bet
 		for (int i = 1; i <= 360; i++) {
 			angle += 2.0 * i * 10e-8;
 			if (attacking) {
-				this->xPosition = xPosition + radius * sin(angle * speed);
-				this->yPosition = yPosition + radius * cos(angle * speed) - 20 * speed * deltaTime;
+				this->xPosition = x + radius * sin(angle * speed);
+				this->yPosition = y + radius * cos(angle * speed) - 20 * speed * deltaTime;
 				if (this->yPosition <= 50) {
 					attacking = false;
 					this->yPosition += 100;
@@ -172,9 +183,6 @@ void Enemy::move(float speed, float deltaTime) { // range of speed should be bet
 
 			}
 		}
-	}
-	else if (type == 6) {
-		return;
 	}
 }
 

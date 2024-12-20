@@ -19,7 +19,7 @@ enum class EnemyType {
 class Enemy
 {
 public:
-	Enemy(char* file_name, double xPosition1, double yPosition1,int type);
+	Enemy(char* file_name, double xPosition1, double yPosition1);
 	~Enemy();
 	bool down = true;
 	bool movingRight = true;
