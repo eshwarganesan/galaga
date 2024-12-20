@@ -18,11 +18,30 @@ using namespace std;
 	height = 86*scale;
 	width = 86*scale;
 	this->type = type;
+	exploding = false;
+	alive = true;
 	create_sprite(file_name, enemy_id);
+	create_sprite("/sprites/player_Explosion3.png", explosion_id[0]);
+	create_sprite("/sprites/player_Explosion4.png", explosion_id[1]);
 }
 
 void Enemy::draw() {
-	draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
+	if (exploding) {
+		double elapsedTime = high_resolution_time() - animationStartTime;
+		if (elapsedTime < 0.0333) {
+			draw_sprite(explosion_id[0], xPosition, yPosition, angle, 1);
+		}
+		else if (elapsedTime < 0.0666) {
+			draw_sprite(explosion_id[1], xPosition, yPosition, angle, 1);
+		}
+		else {
+			alive = false;
+		}
+	}
+	else if (alive) {
+		draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
+	}
+	
 }
 /*
 void Enemy::spawn(float xPosition) {
@@ -181,4 +200,9 @@ bool Enemy::operator==(const Enemy& other) const {
 Enemy::~Enemy() {
 	cout << "\nDestroying Enemy";
 	return;
+}
+
+void Enemy::death_animation() {
+	this->exploding = true;
+	this->animationStartTime = high_resolution_time();
 }

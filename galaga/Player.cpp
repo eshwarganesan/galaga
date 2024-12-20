@@ -49,6 +49,7 @@ void Player::move(double direction, double deltaTime) {
 
 	if (this->xPosition + dx <= 35) {
 		this->xPosition = 35;
+
 		return;
 	}
 	if (this->xPosition + dx >= 1245) {

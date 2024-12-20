@@ -23,6 +23,9 @@ std::pair<double, double> project(const std::vector<Vector2>& shape, const Vecto
 bool overlap(double minA, double maxA, double minB, double maxB);
 void play_sound(char* filename);
 void spawnWave(std::vector<Enemy>& enemies, long int wave);
+void Victory();
+void wave_number_png(int wave);
+void gameover();
 
 //Eshwar and Patrick
 int main()
@@ -143,12 +146,15 @@ int main()
         }
         */
 
+        cout << "Bullets :" << player_bullets.size() << "\r";
+
         if (enemies.size() == 0) {
             if (wave < 5) {
                 wave += 1;
                 spawnWave(enemies, wave);
                 player_bullets.clear();
                 enemy_bullets.clear();
+                wave_number_png(wave);
                 Sleep(4000);
                 spaceship->respawn();
                 /*
@@ -183,6 +189,7 @@ int main()
             else {
                 player_bullets.clear();
                 enemy_bullets.clear();
+                Victory();
                 Sleep(4000);
                 break;
             }
@@ -195,6 +202,12 @@ int main()
         
         for (auto& enemy : enemies) {
             enemy.draw();
+
+            if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {
+                spaceship->death_animation();
+                lives--;
+                break;
+            }
         }
       
         for (auto& bullet : player_bullets) {
@@ -209,35 +222,22 @@ int main()
         if (KEY('D')) {
             spaceship->move(1, delta);
         }
-        if (KEY('L') && fireDelay > 0.5) {
+        if (KEY('L') && fireDelay > 0.1) {
             spaceship->shoot(player_bullets);
             play_sound("Bullet_Shooting.wav");
             lastFire = currentTime;
         }
         //check collision of player bullets
-        for (auto it = player_bullets.begin(); it != player_bullets.end(); ) {
-            it->update(delta);
-
-            if (it->outOfScreen()) {
-                it = player_bullets.erase(it); // Safe erase
+        for (auto& bullet : player_bullets) {
+            bullet.update(delta);
+            if (bullet.outOfScreen()) {
+                player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
             }
-            else {
-                bool collided = false;
-                for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); ) {
-                    if (checkCollision(it->getVertices(), enemy_it->getVertices())) {
-                        enemy_it = enemies.erase(enemy_it);
-                        collided = true;
-                        score += 1;
-                    }
-                    else {
-                        ++enemy_it;
-                    }
-                }
-                if (collided) {
-                    it = player_bullets.erase(it); // Remove the bullet only once
-                }
-                else {
-                    ++it;
+            for (auto& enemy : enemies) {
+                if (checkCollision(bullet.getVertices(), enemy.getVertices())) {
+                    player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
+                    enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
+                    score += 1;
                 }
             }
         }
@@ -253,14 +253,7 @@ int main()
                 break;
             }
         }
-        //check collision of enemies with players
-        for (auto& enemy : enemies) {
-            if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {
-                spaceship->death_animation();
-                lives--;
-                break;
-            }
-        }
+        
         
         update();
         if (spaceship->alive == false) {
@@ -269,6 +262,8 @@ int main()
                 Sleep(3000);
             }
             else {
+                Sleep(3000);
+                gameover();
                 break;
             }
         }
@@ -420,7 +415,6 @@ void spawnWave(std::vector<Enemy>& enemies, long int wave) {
 }
 
 void gameover() {
-    initialize_graphics();
     int GameOver_id;
     clear();
     create_sprite("Gameover_screen.JPG", GameOver_id);
@@ -438,7 +432,6 @@ void gameover() {
 }
 
 void Victory() {
-    initialize_graphics();
     int Victory_id;
     clear();
     create_sprite("Victory_screen.JPG", Victory_id);
@@ -455,9 +448,7 @@ void Victory() {
     }
 }
 void wave_number_png(int wave) {
-    initialize_graphics();
     int wave_id[5];
-    clear();
     create_sprite("Wave1.png", wave_id[0]);
     create_sprite("Wave2.png", wave_id[1]);
     create_sprite("Wave3.png", wave_id[2]);
@@ -476,7 +467,8 @@ void wave_number_png(int wave) {
     x = 0.0;
     y = 0.0;
     q = 0.0;
-    scale = 1.0;
-    draw_sprite(wave_id[wave], x, y, q, scale);
+    scale = -1.0;
+    draw_sprite(wave_id[wave - 1], x, y, q, scale);
     update();
+    
 }

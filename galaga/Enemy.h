@@ -33,20 +33,23 @@ public:
 	void zigzag(float speed, float deltaTime);
 	std::vector<Vector2> getVertices();
 	void shoot(std::vector<Bullet>& bullets);
-	void death(int frame);
 	bool operator==(const Enemy& other) const;
 	int enemy_id;
-	int explosion_id[4];
 	void sim_step(double dt);
 	float x, y;
 	float z=0;
 	float last_time = 0;
 	int type;
+	int explosion_id[2];
+	bool exploding;
+	bool alive;
+	void death_animation();
 private:
 	float speed;
 	double xPosition, yPosition;
 	double scale, angle;
 	double height, width;
+	double animationStartTime;
 	
 };
 

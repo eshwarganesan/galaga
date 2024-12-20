@@ -14,6 +14,7 @@ Bullet::Bullet(char* filename, double xPosition, double yPosition, double speed)
 	height = 57 * scale;
 
 	create_sprite(filename, id);
+
 }
 
 void Bullet::draw() {
