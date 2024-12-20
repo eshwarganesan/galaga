@@ -7,13 +7,10 @@
 #include <vector>
 #include "timer.h"
 #include "Enemy.h"
-
+#include "ran.h"
 #include <Windows.h> // also needed for the 2D graphics library
 #include "Player.h"
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 #include "2D_graphics.h" // use the 2D graphics library
 #include <MMSystem.h>
 #pragma comment(lib,"winmm.lib")
@@ -25,8 +22,9 @@ bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2
 std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis);
 bool overlap(double minA, double maxA, double minB, double maxB);
 void play_sound(char* filename);
-void spawnWave(std::vector<Enemy>& enemies, int wave, int enemy_count);
+void spawnWave(std::vector<Enemy>& enemies, long int wave, long int enemy_count);
 
+//Eshwar and Patrick
 int main()
 {
 	/*const char* directXWindow = "..\\DirectX_Window\\DirectX_window.exe";
@@ -55,16 +53,14 @@ int main()
 
     double lives = 3;
     double score = 0;
-    int wave = 1;
+    long int wave = 1;
+    long int enemycount = 3;
     update();
 
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
     
-    enemies.push_back(Enemy("enemyBlack1.png", 200, 800));
-    enemies.push_back(Enemy("enemyBlack4.png", 300, 800));
-    enemies.push_back(Enemy("enemyBlack2.png", 400, 800));
-    enemies.push_back(Enemy("enemyBlack3.png", 500, 800));
+    spawnWave(enemies, wave, enemycount);
 
     double fps = 0.0;
     while (true) {
@@ -81,6 +77,7 @@ int main()
         lastTime = currentTime;
         spaceship->draw();
         
+        /*
         if (delta > 0) {
             fps = 1.0 / delta;
         }
@@ -90,17 +87,16 @@ int main()
         for (auto& enemy : enemies) {
             enemy.draw();
         }
-<<<<<<< Updated upstream
-        
-=======
-     //   enemies[0].spawn(100);
-     //   enemies[1].spawn(300);
-    //    enemies[2].spawn(500);
-      //  enemies[3].spawn(700);
->>>>>>> Stashed changes
+        */
+
+        if (enemies.size() == 0) {
+            wave += 1;
+            spawnWave(enemies, wave, enemycount);
+        }
+
      //   enemy1->attack(1, currentTime);
       //  enemies[0].move(5);
-        enemies[1].circle(1,currentTime,800,500); // use ufo PNG
+        //enemies[1].circle(1,currentTime,800,500); // use ufo PNG
       //  enemy3->zigzag(1, currentTime);
         
         /*
@@ -188,7 +184,7 @@ int main()
     delete spaceship;
 	return 0;
 }
-
+//Eshwar
 bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2) {
     // Combine edges from both hitboxes
     std::vector<Vector2> axes;
@@ -222,7 +218,7 @@ bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2
 
     return true;  // Collision detected
 }
-
+//Eshwar
 std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis) {
     double min = shape[0].x * axis.x + shape[0].y * axis.y;
     double max = min;
@@ -235,11 +231,11 @@ std::pair<double, double> project(const std::vector<Vector2>& shape, const Vecto
 
     return std::make_pair(min, max);
 }
-
+//Eshwar
 bool overlap(double minA, double maxA, double minB, double maxB) {
     return !(minA > maxB || minB > maxA);
 }
-
+//Eshwar
 void play_sound(char *filename) {
 
     char* p_buffer{};
@@ -280,13 +276,23 @@ void play_sound(char *filename) {
 
 }
 
-void spawnWave(std::vector<Enemy>& enemies, int wave, int enemy_count) {
+//Eshwar and Patrick
+void spawnWave(std::vector<Enemy>& enemies, long int wave, long int enemy_count) {
     int number_to_spawn;
-    if (enemy_count == 10) {
+    long int seed = wave * -1 - 1;
+    long int seed2 = wave * -2 - 3;
+    if (enemy_count + wave == 10) {
         number_to_spawn = 10;
     }
     else {
-        number_to_spawn = wave + 1;
+        number_to_spawn = wave + enemy_count;
     }
+    for (int i = 0; i < number_to_spawn; ++i) {
+        // Randomize positions and assign increasing speed
+        double x = 1200 * ran(seed); // Random X position within the screen width
+        double y = (ran(seed2) - 0.5) / 0.5 * 250 + 450; // Random Y position near the top
 
+        // Create and add the enemy to the vector
+        enemies.push_back(Enemy("enemyBlack1.png", x, y));
+    }
 }

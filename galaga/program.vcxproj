@@ -135,6 +135,9 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="program.cpp" />
+    <ClCompile Include="ran.cpp" />
+    <ClCompile Include="ran2.cpp" />
+    <ClCompile Include="ran3.cpp" />
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="ran.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="timer.h" />

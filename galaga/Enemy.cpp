@@ -27,10 +27,11 @@ using namespace std;
 	scale = 0.90;
 	angle = 0;
 	speed = 500.0;
-height = 86*scale;
-width = 86*scale;
+	height = 86*scale;
+	width = 86*scale;
 
 	create_sprite(file_name, enemy_id);
+	cout << "\nEnemy spawned at X: " << xPosition << " Y: " << yPosition;
 }
 
 void Enemy::draw() {
