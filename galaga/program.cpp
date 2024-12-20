@@ -10,6 +10,10 @@
 
 #include <Windows.h> // also needed for the 2D graphics library
 #include "Player.h"
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 #include "2D_graphics.h" // use the 2D graphics library
 #include <MMSystem.h>
 #pragma comment(lib,"winmm.lib")
@@ -86,10 +90,17 @@ int main()
         for (auto& enemy : enemies) {
             enemy.draw();
         }
+<<<<<<< Updated upstream
         
+=======
+     //   enemies[0].spawn(100);
+     //   enemies[1].spawn(300);
+    //    enemies[2].spawn(500);
+      //  enemies[3].spawn(700);
+>>>>>>> Stashed changes
      //   enemy1->attack(1, currentTime);
-      //  enemy4->move(5);
-        enemies[1].swirl(1,currentTime,600,300); // use ufo PNG
+      //  enemies[0].move(5);
+        enemies[1].circle(1,currentTime,800,500); // use ufo PNG
       //  enemy3->zigzag(1, currentTime);
         
         /*

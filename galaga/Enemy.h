@@ -28,6 +28,7 @@ public:
 	void move(float speed);
 	void attack(float speed,float deltaTime);
 	void swirl(float speed, float deltaTime, float x, float y);
+	void circle(float speed, float deltaTime, float x, float y);
 	void zigzag(float speed, float deltaTime);
 	std::vector<Vector2> getVertices();
 	void shoot(std::vector<Bullet>& bullets);

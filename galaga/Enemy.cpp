@@ -40,7 +40,7 @@ void Enemy::spawn(float xPosition) {
 	if (yPosition <= 300) {
 		return;
 	}
-	this->yPosition -= 10;
+	this->yPosition -= 1;
 	return;
 
 }
@@ -86,39 +86,67 @@ void Enemy::attack(float speed, float deltaTime) {
 }
 
 void Enemy::swirl(float speed, float deltaTime, float x, float y) {
-	double radius = 100;
+	static double angle = 0.0; // Angle for swirl movement
+	double radius = 100.0;    // Swirl radius
+	static float z = 680;     // Vertical reset position
 	float start_time = deltaTime;
-	float last_time;
-	float new_time = deltaTime - last_time;
+	yPosition = y;
+	angle += 0.05;
+	if (attacking) {
+		// Increment angle for swirling
+
+
+		// Update position with swirl pattern
+		this->xPosition = x + radius * sin(angle);
+		this->yPosition -= 25 * speed * deltaTime;
+
+		// If the enemy reaches the top boundary, stop attacking
+		if (this->yPosition <= 50) {
+			yPosition = y;// Switch to moving upward
+			attacking = false;
+			return;
+		}
+	}
 	
+	else {
+		
+	//	this->yPosition += 50 * speed;
+		this->xPosition = x + radius * sin(angle);
+		
+		
+	}
+}
+
+void Enemy::circle(float speed, float deltaTime, float x, float y) {
+	double radius = 100;
+	for (int i = 1; i <= 360; i++) {
+		angle += 2.0 * i * 10e-8;
 		if (attacking) {
 			//cout << "patrick says bye\n";
-			for (int i = 1; i <= 360; i++) {
-				angle += 2.0 * i * 10e-8;
-				this->xPosition = x + radius * sin(angle * speed);
-				this->yPosition = y + z - 20 * speed * new_time;
-				//cout << "Patrick is tired\n " << z << ":\t" <<i;
-				if (this->yPosition <= 50) {
-					attacking = false;
 
-					return;
-				}
+			
+			this->xPosition = x + radius * sin(angle * speed);
+			this->yPosition = y + radius * cos(angle * speed) - 20 * speed * deltaTime;
+			//cout << "Patrick is tired\n " << z << ":\t" <<i;
+			if (this->yPosition <= 50) {
+				attacking = false;
+				this->yPosition += 100;
+				this->yPosition += 100;
+				this->yPosition += 100;
+				return;
 			}
 		}
+	
 		else {
 			if (this->yPosition >= 690) {
 				attacking = true;
-				float last_time = new_time;
-				//	this->yPosition = 680;
-				//cout << "Patrick says high\n";
-
-				z = 680;
-				return;
-
 			}
+			this->xPosition = x + radius * sin(angle * speed);
+			this->yPosition = y + radius * cos(angle * speed);
 			this->yPosition = yPosition + 5 * speed;
-			cout << yPosition << ":" << y << "\n";
+
 		}
+	}
 	
 }
 		
