@@ -58,7 +58,7 @@ int main()
     //Instruction background
     draw_sprite(intro_id, x, y, q, scale);
     //Instruction text
-    x = 440;
+    x = 340;
     y = 550;
     scale = 0.5;
 
@@ -85,7 +85,7 @@ int main()
 
     y -= 60;
 
-    text("Press any button to begin", x, y, scale);
+    text("Press Enter to begin", x, y, scale);
 
     y -= 60;
 
@@ -151,6 +151,33 @@ int main()
                 enemy_bullets.clear();
                 Sleep(4000);
                 spaceship->respawn();
+                if (wave == 1) {
+                    enemies[2].move(10, currentTime);
+                    enemies[4].move(10, currentTime);
+                }
+                if (wave == 2) {
+                    enemies[1].move(10, currentTime);
+                    enemies[5].move(10, currentTime);
+                }
+                if (wave == 3) {
+                    enemies[1].move(10, currentTime);
+                    enemies[2].move(10, currentTime);
+                    enemies[3].move(10, currentTime);
+                }
+                if (wave == 4) {
+                    enemies[1].move(10, currentTime);
+                    enemies[2].move(10, currentTime);
+                    enemies[3].move(10, currentTime);
+                    enemies[4].move(10, currentTime);
+                    enemies[5].move(10, currentTime);
+                    enemies[6].move(10, currentTime);
+                }
+                if (wave == 5) {
+                    enemies[1].move(10, currentTime);
+                    enemies[2].move(10, currentTime);
+                    enemies[3].move(10, currentTime);
+                    enemies[4].move(10, currentTime);
+                }
             }
             else {
                 player_bullets.clear();
@@ -341,35 +368,47 @@ void spawnWave(std::vector<Enemy>& enemies, long int wave) {
    float  t= high_resolution_time();
     switch (wave) {
     case 1:
-        //5 stationary enemies
+        //3 stationary enemies
         for (int i = 0; i < 5; ++i) {
-            enemies.push_back(Enemy("enemyBlack1.png", 200 + i * 100, 400)); // Spread out horizontally
-       
+            if (i == 2 || i == 4) {
+                enemies.push_back(Enemy("enemyBlack1.png", 200 + i * 100, 500, 1));
+            }
+            else enemies.push_back(Enemy("enemyBlack1.png", 200 + i * 100, 400,1)); 
+           
         }
         break;
     case 2:
         //8 stationary enemies
         for (int i = 0; i < 8; ++i) {
             int row = i < 4 ? 0 : 1;
-            enemies.push_back(Enemy("enemyBlack1.png", 150 + (i % 5) * 100, 100 + row * 50)); // Spread out horizontally
+            if (i == 1 || i == 5) {
+             enemies.push_back(Enemy("enemyBlack1.png", 150 + (i % 5) * 100, 100 + row * 50, 3));
+
+            }
+            else enemies.push_back(Enemy("enemyBlack1.png", 150 + (i % 5) * 100, 100 + row * 50,6)); // Spread out horizontally
+           
         }
         break;
     case 3:
         //3 swirling enemies
         for (int i = 0; i < 3; ++i) {
-            enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 200, 600));
+            if (i == 2) enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 200, 600, 4));
+
+            else enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 200, 600, 3));
+
+            break;
         }
-        break;
     case 4:
         //6 enemies, 2 moving side to side and 4 swirling
         for (int i = 0; i < 6; ++i) {
-            enemies.push_back(Enemy("enemyBlack3.png", 150 + i * 200, 600));
+          enemies.push_back(Enemy("enemyBlack3.png", 150 + i * 200, 600,i));
         }
         break;
     case 5:
         //4 enemies moving in circles, 1 moving side to side
         for (int i = 0; i < 4; ++i) {
-            enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 200, 600));
+            if (i == 2 || i == 4) enemies.push_back(Enemy("enemyBlack3.png", 150 + i * 200, 600, 5));
+            else  enemies.push_back(Enemy("enemyBlack3.png", 150 + i * 200, 600,4));
         }
         break;
     }
@@ -390,7 +429,6 @@ void gameover() {
     update();
     while (1) {
         getchar();
-        break;
     }
 }
 
@@ -409,7 +447,6 @@ void Victory() {
     update();
     while (1) {
         getchar();
-        break;
     }
 }
 void wave_number_png(int wave) {
@@ -437,8 +474,4 @@ void wave_number_png(int wave) {
     scale = 1.0;
     draw_sprite(wave_id[wave], x, y, q, scale);
     update();
-    while (1) {
-        getchar();
-        break;
-    }
 }
