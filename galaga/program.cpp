@@ -144,11 +144,18 @@ int main()
         */
 
         if (enemies.size() == 0) {
-            if (wave < 10) {
+            if (wave < 5) {
                 wave += 1;
                 spawnWave(enemies, wave);
+                player_bullets.clear();
+                enemy_bullets.clear();
+                Sleep(4000);
+                spaceship->respawn();
             }
             else {
+                player_bullets.clear();
+                enemy_bullets.clear();
+                Sleep(4000);
                 break;
             }
         }
@@ -162,9 +169,6 @@ int main()
         }
         for (auto& enemy_bullet : enemy_bullets) {
             enemy_bullet.draw();
-        }
-        if (KEY('O')) {
-            enemies[0].shoot(enemy_bullets);
         }
         if (KEY('A')) {
             spaceship->move(-1, delta);
@@ -334,7 +338,7 @@ void play_sound(char *filename) {
 
 //Eshwar and Patrick
 void spawnWave(std::vector<Enemy>& enemies, long int wave) {
-    
+
     switch (wave) {
     case 1:
         //5 stationary enemies
@@ -365,35 +369,6 @@ void spawnWave(std::vector<Enemy>& enemies, long int wave) {
         //4 enemies moving in circles, 1 moving side to side
         for (int i = 0; i < 4; ++i) {
             enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 200, 600));
-        }
-        break;
-    case 6:
-        //5 zig zag, 1 side to side from top
-        for (int i = 0; i < 6; ++i) {
-            enemies.push_back(Enemy("enemyBlack3.png", 150 + i * 200, 600));
-        }
-        break;
-    case 7:
-        //7 enemies moving side to side
-        for (int i = 0; i < 7; ++i) {
-            enemies.push_back(Enemy("enemyBlack3.png", 50 + i * 100, 600));
-        }
-        break;
-    case 8:
-        //1 super fast circle moving enemy shooting fast
-        enemies.push_back(Enemy("enemyBlack3.png", 300 , 600));
-        break;
-    case 9:
-        //5 super fast side to side moving shooting fast
-        for (int i = 0; i < 5; ++i) {
-            enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 100, 600));
-        }
-        break;
-    case 10:
-        //10 super fast side to side moving shooting fast
-        for (int i = 0; i < 10; ++i) {
-            int row = i < 5 ? 0 : 1;
-            enemies.push_back(Enemy("enemyBlack1.png", 150 + (i % 5) * 100, 100 + row * 50));
         }
         break;
     }
