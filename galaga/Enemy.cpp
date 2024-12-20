@@ -21,7 +21,7 @@ using namespace std;
 
 
 
- Enemy::Enemy(char *file_name, double yPosition1, double xPosition1) {
+ Enemy::Enemy(char *file_name, double xPosition1, double yPosition1) {
 	yPosition = yPosition1;
 	xPosition = xPosition1;
 	scale = 0.90;
@@ -31,7 +31,6 @@ using namespace std;
 	width = 86*scale;
 
 	create_sprite(file_name, enemy_id);
-	cout << "\nEnemy spawned at X: " << xPosition << " Y: " << yPosition;
 }
 
 void Enemy::draw() {

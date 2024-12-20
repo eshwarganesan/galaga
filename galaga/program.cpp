@@ -22,7 +22,7 @@ bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2
 std::pair<double, double> project(const std::vector<Vector2>& shape, const Vector2& axis);
 bool overlap(double minA, double maxA, double minB, double maxB);
 void play_sound(char* filename);
-void spawnWave(std::vector<Enemy>& enemies, long int wave, long int enemy_count);
+void spawnWave(std::vector<Enemy>& enemies, long int wave);
 
 //Eshwar and Patrick
 int main()
@@ -54,13 +54,12 @@ int main()
     double lives = 3;
     double score = 0;
     long int wave = 1;
-    long int enemycount = 3;
     update();
 
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
     
-    spawnWave(enemies, wave, enemycount);
+    spawnWave(enemies, wave);
 
     double fps = 0.0;
     while (true) {
@@ -71,6 +70,8 @@ int main()
         text(lives, 80, 700, 0.4);
         text("Score: ", 10, 680, 0.4);
         text(score, 90, 680, 0.4);
+        text("Wave: ", 10, 660, 0.4);
+        text(wave, 90, 660, 0.4);
         double currentTime = high_resolution_time();
         double delta = currentTime - lastTime;
         double fireDelay = currentTime - lastFire;
@@ -90,28 +91,18 @@ int main()
         */
 
         if (enemies.size() == 0) {
-            wave += 1;
-            spawnWave(enemies, wave, enemycount);
-        }
-
-     //   enemy1->attack(1, currentTime);
-      //  enemies[0].move(5);
-        //enemies[1].circle(1,currentTime,800,500); // use ufo PNG
-      //  enemy3->zigzag(1, currentTime);
-        
-        /*
-        for (auto& bullet : enemy_bullets) {
-            bullet.draw();
-        }
-        for (auto& bullet : enemy_bullets) {
-            bullet.update(delta);
-            if (bullet.outOfScreen()) {
-                cout << "\nBullet hit the top edge";
-                enemy_bullets.erase(std::remove(enemy_bullets.begin(), enemy_bullets.end(), bullet), enemy_bullets.end());
+            if (wave < 10) {
+                wave += 1;
+                spawnWave(enemies, wave);
+            }
+            else {
+                break;
             }
         }
-        enemy4->shoot(enemy_bullets, 2000);
-        */
+
+        for (auto& enemy : enemies) {
+            enemy.draw();
+        }
 
         for (auto& bullet : player_bullets) {
             bullet.draw();
@@ -134,19 +125,31 @@ int main()
             lastFire = currentTime;
         }
         //check collision of player bullets
-        for (auto& bullet : player_bullets) {
-            bullet.update(delta);
-            if (bullet.outOfScreen()) {
-                player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
+        for (auto it = player_bullets.begin(); it != player_bullets.end(); ) {
+            it->update(delta);
+
+            if (it->outOfScreen()) {
+                it = player_bullets.erase(it); // Safe erase
             }
-            for (auto& enemy : enemies) {
-                if (checkCollision(bullet.getVertices(), enemy.getVertices())) {
-                    player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
-                    enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
-                    score += 1;
+            else {
+                bool collided = false;
+                for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); ) {
+                    if (checkCollision(it->getVertices(), enemy_it->getVertices())) {
+                        enemy_it = enemies.erase(enemy_it);
+                        collided = true;
+                        score += 1;
+                    }
+                    else {
+                        ++enemy_it;
+                    }
+                }
+                if (collided) {
+                    it = player_bullets.erase(it); // Remove the bullet only once
+                }
+                else {
+                    ++it;
                 }
             }
-            
         }
         //check collision of enemy bullets
         for (auto& enemy_bullet : enemy_bullets) {
@@ -277,22 +280,68 @@ void play_sound(char *filename) {
 }
 
 //Eshwar and Patrick
-void spawnWave(std::vector<Enemy>& enemies, long int wave, long int enemy_count) {
-    int number_to_spawn;
-    long int seed = wave * -1 - 1;
-    long int seed2 = wave * -2 - 3;
-    if (enemy_count + wave == 10) {
-        number_to_spawn = 10;
-    }
-    else {
-        number_to_spawn = wave + enemy_count;
-    }
-    for (int i = 0; i < number_to_spawn; ++i) {
-        // Randomize positions and assign increasing speed
-        double x = 1200 * ran(seed); // Random X position within the screen width
-        double y = (ran(seed2) - 0.5) / 0.5 * 250 + 450; // Random Y position near the top
-
-        // Create and add the enemy to the vector
-        enemies.push_back(Enemy("enemyBlack1.png", x, y));
+void spawnWave(std::vector<Enemy>& enemies, long int wave) {
+    
+    switch (wave) {
+    case 1:
+        //5 stationary enemies
+        for (int i = 0; i < 5; ++i) {
+            enemies.push_back(Enemy("enemyBlack1.png", 200 + i * 100, 400)); // Spread out horizontally
+        }
+        break;
+    case 2:
+        //8 stationary enemies
+        for (int i = 0; i < 8; ++i) {
+            int row = i < 4 ? 0 : 1;
+            enemies.push_back(Enemy("enemyBlack1.png", 150 + (i % 5) * 100, 100 + row * 50)); // Spread out horizontally
+        }
+        break;
+    case 3:
+        //3 swirling enemies
+        for (int i = 0; i < 3; ++i) {
+            enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 200, 600));
+        }
+        break;
+    case 4:
+        //6 enemies, 2 moving side to side and 4 swirling
+        for (int i = 0; i < 6; ++i) {
+            enemies.push_back(Enemy("enemyBlack3.png", 150 + i * 200, 600));
+        }
+        break;
+    case 5:
+        //4 enemies moving in circles, 1 moving side to side
+        for (int i = 0; i < 4; ++i) {
+            enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 200, 600));
+        }
+        break;
+    case 6:
+        //5 zig zag, 1 side to side from top
+        for (int i = 0; i < 6; ++i) {
+            enemies.push_back(Enemy("enemyBlack3.png", 150 + i * 200, 600));
+        }
+        break;
+    case 7:
+        //7 enemies moving side to side
+        for (int i = 0; i < 7; ++i) {
+            enemies.push_back(Enemy("enemyBlack3.png", 50 + i * 100, 600));
+        }
+        break;
+    case 8:
+        //1 super fast circle moving enemy shooting fast
+        enemies.push_back(Enemy("enemyBlack3.png", 300 , 600));
+        break;
+    case 9:
+        //5 super fast side to side moving shooting fast
+        for (int i = 0; i < 5; ++i) {
+            enemies.push_back(Enemy("enemyBlack3.png", 300 + i * 100, 600));
+        }
+        break;
+    case 10:
+        //10 super fast side to side moving shooting fast
+        for (int i = 0; i < 10; ++i) {
+            int row = i < 5 ? 0 : 1;
+            enemies.push_back(Enemy("enemyBlack1.png", 150 + (i % 5) * 100, 100 + row * 50));
+        }
+        break;
     }
 }

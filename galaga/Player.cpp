@@ -49,17 +49,14 @@ void Player::move(double direction, double deltaTime) {
 
 	if (this->xPosition + dx <= 35) {
 		this->xPosition = 35;
-		cout << "\nMoving player - X: " << this->xPosition << "\r";
 		return;
 	}
 	if (this->xPosition + dx >= 1245) {
 		this->xPosition = 1245;
-		cout << "\nMoving player - X: " << this->xPosition << "\r";
 		return;
 	}
 	
 	this->xPosition += dx;
-	cout << "\nMoving player - X: " << this->xPosition << "\r";
 
 }
 

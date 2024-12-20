@@ -14,7 +14,6 @@ Bullet::Bullet(char* filename, double xPosition, double yPosition, double speed)
 	height = 57 * scale;
 
 	create_sprite(filename, id);
-	cout << "\nBullet created at X: " << x << ", Y: " << y << "\n";
 }
 
 void Bullet::draw() {
