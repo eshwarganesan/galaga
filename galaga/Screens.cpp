@@ -32,38 +32,38 @@ int main()
 	//Instruction background
 	draw_sprite(intro_id, x, y, q, scale);
 	//Instruction text
-	x = 50;
+	x = 440;
 	y = 550;
-	scale = 0.5;
+	scale = 1;
 
-	text("Welcome to the game!", x, y, scale);
-
-	y -= 60;
-
-	text("Use 'A' and 'D' to move left and right", x, y, scale);
+	text("GALAGA - SPACESHOOTER", x, y, scale);
 
 	y -= 60;
 
-	text("Tap Space to jump, Shift to dash, and Control to roll", x, y, scale);
+	text("To move, you can use the 'A' and 'D' keys to move left and right", x, y, scale);
 
 	y -= 60;
 
-	text("You can leap through the orange platforms", x, y, scale);
+	text(Use 'L' to shoot bullets, x, y, scale);
+
+	y -= 60;
+
+	text("Many different types of enemies will attack you in different waves", x, y, scale);
 
 	y -= 30;
-	text("and tap 'S' to fall through them", x, y, scale);
+	text("Beware as different enemies have different abilities and movement", x, y, scale);
 
 	y -= 60;
 
-	text("Make your way past the enemies and reach the golden coin!", x, y, scale);
+	text("You're given three lives to complete all waves", x, y, scale);
 
 	y -= 60;
 
-	text("Press Enter when you're ready to begin", x, y, scale);
+	text("Press any button to begin", x, y, scale);
 
 	y -= 60;
 
-	text("p.s. the walls are sticky", x, y, scale);
+	text("Goodluck!", x, y, scale);
 
 	update();
 
@@ -72,6 +72,7 @@ int main()
 		break;
 		clear();
 	}
+	/*
 	x = 0;
 	y = 0;
 	draw_sprite(Victory_id, x, y, q, scale);
@@ -87,4 +88,5 @@ int main()
 			getchar();
 			break;
 		}
+		*/
 }
