@@ -60,7 +60,7 @@ int main()
     //Instruction text
     x = 440;
     y = 550;
-    scale = 1;
+    scale = 0.5;
 
     text("GALAGA - SPACESHOOTER", x, y, scale);
 
@@ -108,7 +108,7 @@ int main()
     double score = 0;
     long int wave = 1;
     update();
-
+   
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
     
@@ -163,7 +163,7 @@ int main()
         for (auto& enemy : enemies) {
             enemy.draw();
         }
-
+      
         for (auto& bullet : player_bullets) {
             bullet.draw();
         }
@@ -338,12 +338,13 @@ void play_sound(char *filename) {
 
 //Eshwar and Patrick
 void spawnWave(std::vector<Enemy>& enemies, long int wave) {
-
+   float  t= high_resolution_time();
     switch (wave) {
     case 1:
         //5 stationary enemies
         for (int i = 0; i < 5; ++i) {
             enemies.push_back(Enemy("enemyBlack1.png", 200 + i * 100, 400)); // Spread out horizontally
+       
         }
         break;
     case 2:

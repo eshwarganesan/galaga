@@ -20,12 +20,13 @@ class Enemy
 {
 public:
 	Enemy(char* file_name, double xPosition1, double yPosition1);
+	~Enemy();
 	bool down = true;
 	bool movingRight = true;
 	bool attacking = true;
 	void draw();
 	void spawn(float xPosition);
-	void move(float speed);
+	void move(float speed,float deltaTime);
 	void attack(float speed,float deltaTime);
 	void swirl(float speed, float deltaTime, float x, float y);
 	void circle(float speed, float deltaTime, float x, float y);
@@ -40,6 +41,7 @@ public:
 	float x, y;
 	float z=0;
 	float last_time = 0;
+	int type;
 private:
 	float speed;
 	double xPosition, yPosition;
