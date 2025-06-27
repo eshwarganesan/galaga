@@ -155,14 +155,14 @@ int main()
                 player_bullets.clear();
                 enemy_bullets.clear();
                 wave_number_png(wave);
-                Sleep(4000);
+                //Sleep(4000);
                 spaceship->respawn();
             }
             else {
                 player_bullets.clear();
                 enemy_bullets.clear();
                 Victory();
-                Sleep(4000);
+               // Sleep(4000);
                 break;
             }
         }
@@ -382,10 +382,6 @@ void gameover() {
     scale = -1.0;
     draw_sprite(GameOver_id, x, y, q, scale);
     update();
-    while (1) {
-        getchar();
-        break;
-    }
 }
 
 void Victory() {
@@ -400,10 +396,6 @@ void Victory() {
     scale = -1.0;
     draw_sprite(Victory_id, x, y, q, scale);
     update();
-    while (1) {
-        getchar();
-        break;
-    }
 }
 void wave_number_png(int wave) {
     int wave_id[5];
@@ -428,8 +420,4 @@ void wave_number_png(int wave) {
     scale = -1.0;
     draw_sprite(wave_id[wave - 1], x, y, q, scale);
     update();
-    while (1) {
-        getchar();
-        break;
-    }
 }
