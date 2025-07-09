@@ -21,41 +21,21 @@ using namespace std;
 
 
 
- Enemy::Enemy(char *file_name, double xPosition1, double yPosition1) {
+Enemy::Enemy(char* file_name, double xPosition1, double yPosition1) {
 	yPosition = yPosition1;
 	xPosition = xPosition1;
 	scale = 0.90;
 	angle = 0;
 	speed = 500.0;
-	height = 86*scale;
-	width = 86*scale;
-	this->type = type;
-	exploding = false;
-	alive = true;
+	height = 86 * scale;
+	width = 86 * scale;
+
 	create_sprite(file_name, enemy_id);
-	create_sprite("/sprites/player_Explosion3.png", explosion_id[0]);
-	create_sprite("/sprites/player_Explosion4.png", explosion_id[1]);
 }
 
 void Enemy::draw() {
-	if (exploding) {
-		double elapsedTime = high_resolution_time() - animationStartTime;
-		if (elapsedTime < 0.0333) {
-			draw_sprite(explosion_id[0], xPosition, yPosition, angle, 1);
-		}
-		else if (elapsedTime < 0.0666) {
-			draw_sprite(explosion_id[1], xPosition, yPosition, angle, 1);
-		}
-		else {
-			alive = false;
-		}
-	}
-	else if (alive) {
-		draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
-	}
-	
+	draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
 }
-/*
 void Enemy::spawn(float xPosition) {
 	if (yPosition <= 300) {
 		return;
@@ -64,127 +44,163 @@ void Enemy::spawn(float xPosition) {
 	return;
 
 }
-*/
-void Enemy::move(float speed, float deltaTime) { // range of speed should be between 1 to 10
-	//5 different movement methods so 5 different types
-	//1 - left and right
-	//2 - up and down
-	//3 - zigzag downwards - comes back at initial position
-	//4 - zigzag laterally
-	//5 - circle swirl downwards - comes back at initial position
-	if(type==1){ 
-		if (movingRight) {
-			this->xPosition = xPosition + speed;
-			if (this->xPosition >= 1200) {
-				movingRight = false;
-				return;
-			}
+void Enemy::move(float speed) { // range of speed should be between 1 to 10
+	if (movingRight) {
+		this->xPosition = xPosition + speed;
+		if (this->xPosition >= 1000) {
+			movingRight = false;
 			return;
 		}
-		else {
-			this->xPosition = xPosition - speed;
-			if (this->xPosition <= 50) {
-				movingRight = true;
-				return;
-			}
-			return;
-		}
+		return;
 	}
-	else if (type == 2) {
-		if (attacking) {
-			this->yPosition = yPosition + speed;
-			if (this->yPosition >= 690) {
-				attacking = false;
-				return;
-			}
+	else {
+		this->xPosition = xPosition - speed;
+		if (this->xPosition <= 200) {
+			movingRight = true;
 			return;
 		}
-		else {
-			this->yPosition = yPosition - speed;
-			if (this->yPosition <= 50) {
-				attacking = true;
-				return;
-			}
-			return;
-		}
-	}
-	else if (type == 3) {
-		static double angle = 0.0; 
-		double radius = 100.0;    
-		yPosition = y;
-		angle += 0.05;
-		if (attacking) {
-			this->xPosition = x + radius * sin(angle);
-			this->yPosition -= 25 * speed * deltaTime;
-			if (this->yPosition <= 50) {
-				yPosition = y;
-				attacking = false;
-				return;
-			}
-		}
-		else {
-			this->xPosition = x + radius * sin(angle);
-		}
-	}
-	else if (type ==4){
-		if (movingRight && attacking) {
-			this->xPosition = xPosition + speed;
-			this->yPosition = yPosition - speed;
-			if (this->xPosition >= 1200) {
-				movingRight = false;
-				return;
-			}
-			if (this->yPosition <= 50) {
-				attacking = false;
-				return;
-			}
-			return;
-		}
-		if (attacking == false) {
-			this->yPosition = yPosition + speed;
-			if (this->yPosition >= 690) {
-				attacking = true;
-				return;
-			}
-			return;
-		}
-		if (movingRight == false) {
-			this->xPosition = xPosition - speed;
-			if (this->xPosition <= 50) {
-				movingRight = true;
-				return;
-			}
-			return;
-		}
-	}
-	else if (type == 5) {
-		double radius = 100;
-		for (int i = 1; i <= 360; i++) {
-			angle += 2.0 * i * 10e-8;
-			if (attacking) {
-				this->xPosition = x + radius * sin(angle * speed);
-				this->yPosition = y + radius * cos(angle * speed) - 20 * speed * deltaTime;
-				if (this->yPosition <= 50) {
-					attacking = false;
-					this->yPosition += 100;
-					this->yPosition += 100;
-					this->yPosition += 100;
-					return;
-				}
-			}
-
-			else {
-				if (this->yPosition >= 690) {
-					attacking = true;
-				}
-				this->xPosition = x + radius * sin(angle * speed);
-				this->yPosition = y + radius * cos(angle * speed);
-				this->yPosition = yPosition + 5 * speed;
-
-			}
-		}
+		return;
 	}
 }
+//Make start attack on a cycle like every 10s 
+void Enemy::attack(float speed, float deltaTime) {
+
+
+	if (attacking) {
+		this->yPosition = yPosition + speed;
+		if (this->yPosition >= 690) {
+			attacking = false;
+			return;
+		}
+		return;
+	}
+	else {
+		this->yPosition = yPosition - speed;
+		if (this->yPosition <= 50) {
+			attacking = true;
+			return;
+		}
+		return;
+	}
+
+}
+
+void Enemy::swirl(float speed, float deltaTime, float x, float y) {
+	static double angle = 0.0; // Angle for swirl movement
+	double radius = 100.0;    // Swirl radius
+	static float z = 680;     // Vertical reset position
+	float start_time = deltaTime;
+	yPosition = y;
+	angle += 0.05;
+	if (attacking) {
+		// Increment angle for swirling
+
+
+		// Update position with swirl pattern
+		this->xPosition = x + radius * sin(angle);
+		this->yPosition -= 25 * speed * deltaTime;
+
+		// If the enemy reaches the top boundary, stop attacking
+		if (this->yPosition <= 50) {
+			yPosition = y;// Switch to moving upward
+			attacking = false;
+			return;
+		}
+	}
+
+	else {
+
+		//	this->yPosition += 50 * speed;
+		this->xPosition = x + radius * sin(angle);
+
+
+	}
+}
+
+void Enemy::circle(float speed, float deltaTime, float x, float y) {
+	double radius = 100;
+	for (int i = 1; i <= 360; i++) {
+		angle += 2.0 * i * 10e-8;
+		if (attacking) {
+			//cout << "patrick says bye\n";
+
+
+			this->xPosition = x + radius * sin(angle * speed);
+			this->yPosition = y + radius * cos(angle * speed) - 20 * speed * deltaTime;
+			//cout << "Patrick is tired\n " << z << ":\t" <<i;
+			if (this->yPosition <= 50) {
+				attacking = false;
+				this->yPosition += 100;
+				this->yPosition += 100;
+				this->yPosition += 100;
+				return;
+			}
+		}
+
+		else {
+			if (this->yPosition >= 690) {
+				attacking = true;
+			}
+			this->xPosition = x + radius * sin(angle * speed);
+			this->yPosition = y + radius * cos(angle * speed);
+			this->yPosition = yPosition + 5 * speed;
+
+		}
+	}
+
+}
+
+
+
+/* Use this for it to go straight up and come back down for some reason
+else {
+	this->yPosition = yPosition + 20 * speed;
+	if (this->yPosition >= 690) {
+	for (int i = 1; i <= 360; i++) {
+		angle += 2.0 * i * 10e-8;
+		this->xPosition = x + radius * sin(angle * speed);
+		this->yPosition = yPosition*2 - radius * cos(angle * speed) - 20 * speed * this_time;
+		attacking = true;
+		return;
+	}
+}
+*/
+
+
+
+void Enemy::zigzag(float speed, float deltaTime) {
+	if (movingRight && attacking) {
+		this->xPosition = xPosition + speed;
+		this->yPosition = yPosition - speed;
+		if (this->xPosition >= 1000) {
+			movingRight = false;
+			return;
+		}
+		if (this->yPosition <= 50) {
+			attacking = false;
+			return;
+		}
+		return;
+	}
+	if (attacking == false) {
+		this->yPosition = yPosition + speed;
+		if (this->yPosition >= 690) {
+			attacking = true;
+			return;
+		}
+		return;
+	}
+	if (movingRight == false) {
+		this->xPosition = xPosition - speed;
+		if (this->xPosition <= 200) {
+			movingRight = true;
+			return;
+		}
+		return;
+	}
+
+}
+
 
 void Enemy::shoot(std::vector<Bullet>& bullets) {
 	bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition - 40, -500.0));
@@ -203,14 +219,4 @@ std::vector<Vector2> Enemy::getVertices() {
 
 bool Enemy::operator==(const Enemy& other) const {
 	return this->xPosition == other.xPosition && this->yPosition == other.yPosition;
-}
-
-Enemy::~Enemy() {
-	cout << "\nDestroying Enemy";
-	return;
-}
-
-void Enemy::death_animation() {
-	this->exploding = true;
-	this->animationStartTime = high_resolution_time();
 }

@@ -162,21 +162,15 @@ int main()
                 player_bullets.clear();
                 enemy_bullets.clear();
                 Victory();
-               // Sleep(4000);
+                //Sleep(4000);
                 break;
             }
         }
 
         for (auto& enemy : enemies) {
             enemy.draw();
-
-            if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {
-                spaceship->death_animation();
-                lives--;
-                break;
-            }
         }
-      
+
         for (auto& bullet : player_bullets) {
             bullet.draw();
         }
@@ -189,22 +183,35 @@ int main()
         if (KEY('D')) {
             spaceship->move(1, delta);
         }
-        if (KEY('L') && fireDelay > 0.1) {
+        if (KEY('L') && fireDelay > 0.5) {
             spaceship->shoot(player_bullets);
             play_sound("Bullet_Shooting.wav");
             lastFire = currentTime;
         }
         //check collision of player bullets
-        for (auto& bullet : player_bullets) {
-            bullet.update(delta);
-            if (bullet.outOfScreen()) {
-                player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
+        for (auto it = player_bullets.begin(); it != player_bullets.end(); ) {
+            it->update(delta);
+
+            if (it->outOfScreen()) {
+                it = player_bullets.erase(it); // Safe erase
             }
-            for (auto& enemy : enemies) {
-                if (checkCollision(bullet.getVertices(), enemy.getVertices())) {
-                    player_bullets.erase(std::remove(player_bullets.begin(), player_bullets.end(), bullet), player_bullets.end());
-                    enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy), enemies.end());
-                    score += 1;
+            else {
+                bool collided = false;
+                for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); ) {
+                    if (checkCollision(it->getVertices(), enemy_it->getVertices())) {
+                        enemy_it = enemies.erase(enemy_it);
+                        collided = true;
+                        score += 1;
+                    }
+                    else {
+                        ++enemy_it;
+                    }
+                }
+                if (collided) {
+                    it = player_bullets.erase(it); // Remove the bullet only once
+                }
+                else {
+                    ++it;
                 }
             }
         }
@@ -220,25 +227,33 @@ int main()
                 break;
             }
         }
-        
-        
+        //check collision of enemies with players
+        for (auto& enemy : enemies) {
+            if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {
+                spaceship->death_animation();
+                lives--;
+                break;
+            }
+        }
+
         update();
         if (spaceship->alive == false) {
             if (lives > 0) {
                 spaceship->respawn();
+                gameover();
                 Sleep(3000);
             }
             else {
-                Sleep(3000);
-                gameover();
                 break;
             }
         }
     }
-    
+
     delete spaceship;
-	return 0;
+    cout << "Game done";
+    return 0;
 }
+
 //Eshwar
 bool checkCollision(std::vector<Vector2>& hitbox1, std::vector<Vector2>& hitbox2) {
     // Combine edges from both hitboxes

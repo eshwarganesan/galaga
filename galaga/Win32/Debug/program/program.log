@@ -1,0 +1,6 @@
+﻿  Enemy.cpp
+  program.cpp
+C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\program.cpp(327,25): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
+C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\program.cpp(351,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  program.vcxproj -> C:\Users\Eshwar\Documents\MECH 415\Project\galaga\galaga\Debug\program.exe
