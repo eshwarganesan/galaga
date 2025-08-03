@@ -132,21 +132,16 @@ int main()
         double delta = currentTime - lastTime;
         double fireDelay = currentTime - lastFire;
         lastTime = currentTime;
-        spaceship->draw();
         
-        /*
+        
+        
         if (delta > 0) {
             fps = 1.0 / delta;
         }
 
         cout << "\nFPS: " << fps << "\r";
-
-        for (auto& enemy : enemies) {
-            enemy.draw();
-        }
-        */
-
-        cout << "Bullets :" << player_bullets.size() << "\r";
+        
+        //cout << "Bullets :" << player_bullets.size() << "\r";
 
         if (enemies.size() == 0) {
             if (wave < 5) {
@@ -167,16 +162,7 @@ int main()
             }
         }
 
-        for (auto& enemy : enemies) {
-            enemy.draw();
-        }
-
-        for (auto& bullet : player_bullets) {
-            bullet.draw();
-        }
-        for (auto& enemy_bullet : enemy_bullets) {
-            enemy_bullet.draw();
-        }
+        //input
         if (KEY('A')) {
             spaceship->move(-1, delta);
         }
@@ -188,55 +174,62 @@ int main()
             play_sound("Bullet_Shooting.wav");
             lastFire = currentTime;
         }
-        //check collision of player bullets
-        for (auto it = player_bullets.begin(); it != player_bullets.end(); ) {
-            it->update(delta);
 
-            if (it->outOfScreen()) {
-                it = player_bullets.erase(it); // Safe erase
+        //update
+        
+        for (auto& bullet : player_bullets)
+            bullet.update(delta);
+
+        for (auto& bullet : enemy_bullets)
+            bullet.update(delta);
+
+        //collisions
+
+        //  player bullets
+        for (auto bullet = player_bullets.begin(); bullet != player_bullets.end(); ) {
+            bool hit = false;
+            for (auto& enemy : enemies) {
+                if (enemy.alive && checkCollision(bullet->getVertices(), enemy.getVertices())) {
+                    enemy.death_animation();
+                    hit = true;
+                    score++;
+                    break;
+                }
+            }
+            if (hit) {
+                bullet = player_bullets.erase(bullet);
             }
             else {
-                bool collided = false;
-                for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); ) {
-                    if (checkCollision(it->getVertices(), enemy_it->getVertices())) {
-                        enemy_it = enemies.erase(enemy_it);
-                        collided = true;
-                        score += 1;
-                    }
-                    else {
-                        ++enemy_it;
-                    }
-                }
-                if (collided) {
-                    it = player_bullets.erase(it); // Remove the bullet only once
-                }
-                else {
-                    ++it;
-                }
-            }
-        }
-        //check collision of enemy bullets
-        for (auto& enemy_bullet : enemy_bullets) {
-            enemy_bullet.update(delta);
-            if (enemy_bullet.outOfScreen()) {
-                enemy_bullets.erase(std::remove(enemy_bullets.begin(), enemy_bullets.end(), enemy_bullet), enemy_bullets.end());
-            }
-            if (checkCollision(spaceship->getVertices(), enemy_bullet.getVertices()) && spaceship->exploding == false) {
-                spaceship->death_animation();
-                lives--;
-                break;
-            }
-        }
-        //check collision of enemies with players
-        for (auto& enemy : enemies) {
-            if (checkCollision(spaceship->getVertices(), enemy.getVertices()) && spaceship->exploding == false) {
-                spaceship->death_animation();
-                lives--;
-                break;
+                ++bullet;
             }
         }
 
+        //cleanup
+        player_bullets.erase(std::remove_if(player_bullets.begin(), player_bullets.end(),
+            [](Bullet& b) {
+                return b.outOfScreen();
+            }), player_bullets.end());
+        
+        enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
+            [currentTime](const Enemy& e) {
+                return !e.alive;
+            }), enemies.end());
+
+        //render
+        spaceship->draw();
+
+        for (auto& bullet : player_bullets)
+            bullet.draw();
+
+        for (auto& bullet : enemy_bullets)
+            bullet.draw();
+
+        for (auto& enemy : enemies)
+            enemy.draw();
+
         update();
+
+
         if (spaceship->alive == false) {
             if (lives > 0) {
                 spaceship->respawn();

@@ -21,6 +21,8 @@ class Enemy
 public:
 	Enemy(char* file_name, double xPosition1, double yPosition1);
 	bool down = true;
+	bool alive;
+	bool exploding;
 	bool movingRight = true;
 	bool attacking = true;
 	void draw();
@@ -33,6 +35,7 @@ public:
 	std::vector<Vector2> getVertices();
 	void shoot(std::vector<Bullet>& bullets);
 	void death(int frame);
+	void death_animation();
 	bool operator==(const Enemy& other) const;
 	int enemy_id;
 	int explosion_id[4];
@@ -45,7 +48,7 @@ private:
 	double xPosition, yPosition;
 	double scale, angle;
 	double height, width;
-
+	double animationStartTime;
 };
 
 void SpawnEnemies();

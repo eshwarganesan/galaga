@@ -31,10 +31,32 @@ Enemy::Enemy(char* file_name, double xPosition1, double yPosition1) {
 	width = 86 * scale;
 
 	create_sprite(file_name, enemy_id);
+	alive = true;
+	exploding = false;
+	animationStartTime = 0;
+
+	create_sprite("/sprites/player_Explosion3.png", explosion_id[0]);
+	create_sprite("/sprites/player_Explosion4.png", explosion_id[1]);
 }
 
+
+
 void Enemy::draw() {
-	draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
+	if (exploding) {
+		double elapsedTime = high_resolution_time() - animationStartTime;
+		if (elapsedTime < 0.0333) {
+			draw_sprite(explosion_id[0], xPosition, yPosition, angle, 1);
+		}
+		else if (elapsedTime < 0.0666) {
+			draw_sprite(explosion_id[1], xPosition, yPosition, angle, 1);
+		}
+		else {
+			this->alive = false;
+		}
+	}
+	else {
+		draw_sprite(enemy_id, xPosition, yPosition, angle, scale);
+	}
 }
 void Enemy::spawn(float xPosition) {
 	if (yPosition <= 300) {
@@ -219,4 +241,9 @@ std::vector<Vector2> Enemy::getVertices() {
 
 bool Enemy::operator==(const Enemy& other) const {
 	return this->xPosition == other.xPosition && this->yPosition == other.yPosition;
+}
+
+void Enemy::death_animation() {
+	this->exploding = true;
+	this->animationStartTime = high_resolution_time();
 }
