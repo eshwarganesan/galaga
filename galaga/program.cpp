@@ -26,6 +26,7 @@ void spawnWave(std::vector<Enemy>& enemies, long int wave);
 void Victory();
 void wave_number_png(int wave);
 void gameover();
+void sleep(double last_time, double time);
 
 //Eshwar and Patrick
 int main()
@@ -114,7 +115,8 @@ int main()
    
     double lastTime = high_resolution_time();
     double lastFire = high_resolution_time();
-    
+    double enemylastFire = high_resolution_time();
+
     spawnWave(enemies, wave);
 
     double fps = 0.0;
@@ -131,6 +133,7 @@ int main()
         double currentTime = high_resolution_time();
         double delta = currentTime - lastTime;
         double fireDelay = currentTime - lastFire;
+        double enemyfireDelay = currentTime - enemylastFire;
         lastTime = currentTime;
 
         spaceship->draw();
@@ -159,7 +162,7 @@ int main()
                 player_bullets.clear();
                 enemy_bullets.clear();
                 wave_number_png(wave);
-                //Sleep(4000);
+                sleep(currentTime, 3.0);
                 spaceship->respawn();
             }
             else {
@@ -183,7 +186,10 @@ int main()
             play_sound("Bullet_Shooting.wav");
             lastFire = currentTime;
         }
-
+        if (KEY('T') && enemyfireDelay > 0.5) {
+            enemies[0].shoot(enemy_bullets);
+            enemylastFire = currentTime;
+        }
         //render
         
         for (auto enemy = enemies.begin(); enemy != enemies.end(); ) {
@@ -216,16 +222,34 @@ int main()
             }
         }
 
+        for (auto bullet = enemy_bullets.begin(); bullet != enemy_bullets.end(); ) {
+            bullet->update(delta);
+            bool hit = false;
+
+            if (spaceship->alive && checkCollision(bullet->getVertices(), spaceship->getVertices())) {
+                spaceship->death_animation();
+                hit = true;
+                break;
+            }
+            if (bullet->outOfScreen() || hit) {
+                bullet = enemy_bullets.erase(bullet);
+            }
+            else {
+                ++bullet;
+            }
+        }
+
         update();
 
 
         if (spaceship->alive == false) {
-            if (lives > 0) {
+            if (lives > 1) {
+                lives--;
                 spaceship->respawn();
-                gameover();
-                Sleep(3000);
+                //sleep(currentTime, 3.0);
             }
             else {
+                gameover();
                 break;
             }
         }
@@ -417,4 +441,12 @@ void wave_number_png(int wave) {
     scale = -1.0;
     draw_sprite(wave_id[wave - 1], x, y, q, scale);
     update();
+}
+
+void sleep(double last_time, double time) {
+
+    double sleep_time = high_resolution_time();
+    while (sleep_time - last_time <= time) {
+        continue;
+    }
 }
