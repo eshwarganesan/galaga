@@ -62,7 +62,7 @@ void Player::move(double direction, double deltaTime) {
 }
 
 void Player::shoot(std::vector<Bullet>& bullets) {
-	bullets.push_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition + 20, 500.0));
+	bullets.emplace_back(Bullet("/sprites/PNG/Lasers/laserRed14.png", xPosition, yPosition + 20, 500.0));
 }
 
 void Player::death_animation() {
